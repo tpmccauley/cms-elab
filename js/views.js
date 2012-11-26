@@ -78,7 +78,6 @@ var ParameterTableView = Backbone.View.extend({
 		//$("table#parameter-table").popover(options);
 
 		this.collection.each(function(p) {
-			pv = new ParameterView();
 			pv.model = p;
 		
 			$("tbody#parameter-body").append(pv.template({parameter:p.toJSON()}));
