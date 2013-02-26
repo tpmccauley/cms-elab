@@ -6,7 +6,8 @@ var Dataset = Backbone.Model.extend({
 		image: "",
 		url: "",
 		content: "Here is a bit of text describing the contents of the dataset"
-	}
+	},
+	idAttribute: "id"
 });
 
 var Datasets = Backbone.Collection.extend({
@@ -28,15 +29,46 @@ var Parameters = Backbone.Collection.extend({
 
 var Plot = Backbone.Model.extend({
 	defaults: {
-		xlabel: "X",
-		ylabel: "Y",
-		xmin: 0.0,
-		xmax: 0.0,
-		nbins: 0,
-		title: "Title",
-		binwidth: 0.0
+		data: [],
+
+		options: {
+			lines: { 
+				show: true, 
+				fill: false, 
+				lineWidth: 1.2 
+			},
+
+    		grid: { 
+    			hoverable: true, 
+    			autoHighlight: false 
+    		},
+    
+    		points: { 
+    			show: false 
+    		},
+
+    		legend: { 
+    			noColumns: 1 
+    		},
+
+    		xaxis: { 
+    			tickDecimals: 0 
+    		},
+
+    		yaxis: { 
+    			autoscaleMargin: 0.1 
+    		}
+		},
+
+		xlabel: "default x label",
+		ylabel: "default y label",
+		title:  "default title"
 	}
 });
+
+
+
+
 
 
 

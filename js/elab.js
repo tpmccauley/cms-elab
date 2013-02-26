@@ -1,67 +1,62 @@
-// This is basically the "main" where we
-// use the objects that have been defined 
-// in the other files:
-// models.js
-// views.js
 
-// Make the datasets
-var jpsi_dataset = new Dataset();
+
+var jpsi_dataset = new Dataset({id:"Jpsimumu"});
 jpsi_dataset.set({
 	type: "Jpsi",
 	name: "Jpsimumu",
 	image: "../img/Jpsimumu.png",
-	description: "2000 di-muons events around the J/&#0968",
-	url: "file:///Users/mccauley/datasets/dimuon_2-5GeV.json",
+	description: "2000 di-muon events around the J/&#0968",
+	url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/dimuon_2-5GeV.json",
 	content: "The J/&#0968 is made up of two charm quarks. It is unstable, and decays to two muons around 6% of the time."
 });
 
-var zmumu_dataset = new Dataset();
+var zmumu_dataset = new Dataset({id:"Zmumu"});
 zmumu_dataset.set({
 	type: "Z",
 	name: "Zmumu", 
 	image: "../img/Zmumu.png",
 	description: "500 di-muon events around the Z boson",
-	url: "file:///Users/mccauley/datasets/Zmumu.json",
+	url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Zmumu.json",
 	content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time."
 });
 
-var zee_dataset = new Dataset();
+var zee_dataset = new Dataset({id:"Zee"});
 zee_dataset.set({
 	type: "Z",
 	name: "Zee", 
 	image: "../img/Zee.png",
 	description: "500 di-electron events around the Z boson",
-	url: "file:///Users/mccauley/datasets/Zee.json",
+	url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Zee.json",
 	content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time."
 });
 
-var wenu_dataset = new Dataset();
+var wenu_dataset = new Dataset({id:"Wenu"});
 wenu_dataset.set({
 	type: "W",
 	name: "Wenu", 
 	image: "../img/Wenu.png",
 	description: "500 events of W to e&#0957",
-	url: "file:///Users/mccauley/datasets/Wenu.json",
+	url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Wenu.json",
 	content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time."
 });
 
-var wmunu_dataset = new Dataset();
+var wmunu_dataset = new Dataset({id:"Wmunu"});
 wmunu_dataset.set({
 	type: "W",
 	name: "Wmunu", 
 	image: "../img/Wmunu.png",
 	description: "500 events of W to &#0956&#0957",
-	url: "file:///Users/mccauley/datasets/Wmunu.json",
+	url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Wmunu.json",
 	content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time."
 });
 
-var dimuon_dataset = new Dataset();
+var dimuon_dataset = new Dataset({id:"dimuon"});
 dimuon_dataset.set({
 	type: "dimuons",
 	name: "dimuon", 
 	image: "../img/dimuon2.png",
 	description: "100,000 di-muon events in the invariant mass range 2-110 GeV",
-	url: "file:///Users/mccauley/datasets/dimuon100k.json",
+	url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/dimuon100k.json",
 	content: "Two protons colliding will produce all sorts of particles. Some of these particles can decay into two muons."
 });
 
@@ -76,26 +71,12 @@ datasets.on("remove", function(ds) {
 	console.log("Removed dataset: " + ds.get("name"));
 });
 
-datasets.add(jpsi_dataset);
-datasets.add(zee_dataset);
-datasets.add(zmumu_dataset);
-datasets.add(wenu_dataset);
-datasets.add(wmunu_dataset);
-datasets.add(dimuon_dataset);
-
-var datasetListView = new DatasetListView({collection:datasets});
-datasetListView.render();
-
-var datasetImageView = new DatasetImageView({collection:datasets});
-datasetImageView.render();
-
 // We could parse the data files to fetch the parameters but there
 // is no information on the units nor is there a description of what 
 // the parameters describe. We don't have to be too generic about this
 // since we know what data will be read in. There are also some parameters
 // that we don't want to (or can't) plot. Therefore, we specify
 // the schema here.
-
 
 var W_parameters = new Parameters([
 	{"name":"E", "unit":"GeV", "description":"The total energy of the lepton", "selected":false},
@@ -148,11 +129,34 @@ var dimuon_parameters = new Parameters([
 	{"name":"M", "unit":"GeV", "description":"The invariant mass of the two leptons", selected:false}
 ]);
 
+jpsi_dataset.set('parameters', Jpsi_parameters);
+zee_dataset.set('parameters', Z_parameters);
+zmumu_dataset.set('parameters', Z_parameters);
+wenu_dataset.set('parameters', W_parameters);
+wmunu_dataset.set('parameters', W_parameters);
+dimuon_dataset.set('parameters', dimuon_parameters);
+
+datasets.add(jpsi_dataset);
+datasets.add(zee_dataset);
+datasets.add(zmumu_dataset);
+datasets.add(wenu_dataset);
+datasets.add(wmunu_dataset);
+datasets.add(dimuon_dataset);
+
+var datasetListView = new DatasetListView({collection:datasets});
+var datasetImageView = new DatasetImageView({collection:datasets});
+
+datasetListView.render();
+datasetImageView.render();
+
 var parameterTableView = new ParameterTableView();
+var parameterDropdownView = new ParameterDropdownView();
 var plotView = new PlotView();
 
 var elabRouter = new ElabRouter();
 Backbone.history.start();
+
+
 
 
 

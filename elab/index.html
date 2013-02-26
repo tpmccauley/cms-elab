@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CMS eLab</title>
+    <title>CMS Public Data</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -12,6 +12,41 @@
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+
+      #placeholder {
+        width: 758px; 
+        height: 380px; 
+        margin-bottom: 26px; 
+        margin-left: 26px; 
+        padding: 0px; 
+        position: center;
+      }
+
+      #plot-controls {
+        position: center;
+      }
+
+      .title {
+        width: 758px; 
+        height: 16px;
+        padding-left: 48px;
+      }
+
+      .xlabel {
+        position: absolute; 
+        left: 400px; 
+        bottom: -24px;
+      }
+
+      .ylabel {
+        position: absolute; 
+        left: -50px; 
+        top: 200px;
+        writing-mode: tb-rl; 
+        filter: flipV flipH; 
+        -webkit-transform: rotate(-90deg); 
+        -moz-transform: rotate(-90deg);
       }
     </style>
     <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
@@ -85,17 +120,32 @@
     </div> <!-- End of datasets div -->
 
     <div class="container" id="parameters">
+
+    <div class="container" id="dropdown">
+
+    <script type="text/template" id="parameters-dropdown-template">
+    <ul class="breadcrumb">
+      <li class="active">Select dataset<span class="divider">/</span></li>
+      <li class="active">Select parameter</li>
+    </ul>
+
+    <div class="btn-group">
+      <a class="btn">Select a parameter</a>
+      <a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+      <ul class="dropdown-menu" id="parameter-ul"></ul>
+    </div>
+    </script>
     
+    <script type="text/template" id="parameter-li-template">
+    <li><a href='#/plot/<%= parameter.name %>'><%= parameter.name %></a></li>
+    </script>
+    </div>
+
     <div class="container" id="table">
 
     <script type="text/template" id="parameters-table-template">
-    <ul class="breadcrumb">
-      <li class="active">Select dataset<span class="divider">/</span></li>
-      <li class="active">Select parameters</li>
-    </ul>
-
-    <h3>Select one or more parameters to histogram:</h3>
     <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
+    
     <thead>
     <tr>
     <th>Parameter</th>
@@ -104,40 +154,74 @@
     <th>Select</th>
     </tr>
     </thead>
-    <tbody id="parameter-body">
-    </tbody>
+
+    <tbody id="parameter-body"></tbody>
+
     </table>
-    <p>
-    <div class="span4 offset4">
-        <a class="btn btn-block" href="#/plots">Plot parameters</a>
-    <div>
-    </p>
-    </script>
-  
-    <script type="text/template" id="parameter-row-template">
-      <tr>
-      <td><%= parameter.name %></td>
-      <td><%= parameter.unit %></td>
-      <td><%= parameter.description %></td>
-      <td>
-      <input id="<%= parameter.name %>" class="btn parameter-select" type="submit" data-toggle="buttons-checkbox" value="">
-      </td>
-      </tr>
+
     </script>
 
+    <script type="text/template" id="parameter-row-template">
+    <tr>
+    <td><%= parameter.name %></td>
+    <td><%= parameter.unit %></td>
+    <td><%= parameter.description %></td>
+    <td>
+    <input id="<%= parameter.name %>" class="btn parameter-select" type="submit" data-toggle="buttons-radio" value="">
+    </td>
+    </tr>
+    </script>
     </div>
+
     </div> <!-- End of parameters div -->
 
     <div class="container" id="plots">
 
-    <script type="text/template" id="plot-message">
+    <script type="text/template" id="plot-template">
     <ul class="breadcrumb">
-      <li class="active">Select dataset<span class="divider">/</span></li>
-      <li class="active">Select parameters<span class="divider">/</span></li>
-      <li class="active">Plots</li>
+      <li class="active">Select dataset  <span class="divider">/</span></li>
+      <li class="active">Select parameter<span class="divider">/</span></li>
+      <li class="active">Plot parameter</li>
     </ul>
 
-    <h3>Sorry. There is nothing here yet.</h3>
+    <div id="plot-controls">
+    <table>
+    <tr>
+
+    <td>
+    <form class="navbar-form pull-left">
+    Y Max:
+    <input type="text" class="span1">
+    <button type="submit" class="btn">Set</button>
+    </form>
+    </td>
+
+    <td><span class="span1"></td>
+
+    <td>
+    <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
+    <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
+    </td>
+
+    <td><span class="span1"></td>
+
+    <td>
+    <form class="navbar-form pull-left">
+    Bin Width:
+    <input type="text" class="span1">
+    <button type="submit" class="btn">Set</button>
+    </form>
+    </td>
+
+    </tr>
+    </table>
+    </div>
+
+    <!--<div class="title"></div>-->
+    <div id="placeholder"></div>
+    <!--<div class="xlabel"></div>-->
+    <!--<div class="ylabel"></div>-->
+   
     </script>
 
     </div> <!-- End of plots div -->
@@ -160,10 +244,22 @@
 
     <script src="../js/underscore-min.js"></script>
     <script src="../js/backbone-min.js"></script>
+    <script src="../js/jquery.flot.js"></script>
+
     <script src="../js/models.js"></script>
     <script src="../js/views.js"></script>
     <script src="../js/routers.js"></script>
     <script src="../js/elab.js"></script>
+
+    <script type="text/javascript">
+    $("#logx").click(function() {
+      console.log("logx");
+    });
+  
+    $("#logy").click(function() {
+      console.log("logy");
+    });
+    </script>
 
   </body>
 </html>

@@ -41,8 +41,7 @@ var DatasetImageView = Backbone.View.extend({
 	}
 });
 
-
-var ParameterView = Backbone.View.extend({
+var ParameterRowView = Backbone.View.extend({
 	el: "tr",
 
 	initialize: function() {
@@ -68,19 +67,41 @@ var ParameterTableView = Backbone.View.extend({
 	render: function() {
 		$(this.el).html(this.template());
 
-		var options = {
-				trigger: "hover",
-				title: "Parameter selection",
-				content: "Each parameter selected will be plotted separately",
-				placement: "top"		
-			};
+		this.collection.each(function(p) {
+			pv = new ParameterRowView();
+			pv.model = p;
+			$("tbody#parameter-body").append(pv.template({parameter:p.toJSON()}));
+		});
+	}
+});
 
-		//$("table#parameter-table").popover(options);
+var ParameterItemView = Backbone.View.extend({
+	el: "li",
+
+	initialize: function() {
+		this.model = this.options.model;
+	},
+
+	template: _.template($('#parameter-li-template').html())
+});
+
+var ParameterDropdownView = Backbone.View.extend({
+	el: "#dropdown",
+
+	initialize: function() {
+		this.collection = this.options.collection;
+	},
+
+	template: _.template($('#parameters-dropdown-template').html()),
+
+	render: function() {
+		$(this.el).html(this.template());
 
 		this.collection.each(function(p) {
+			pv = new ParameterItemView();
 			pv.model = p;
-		
-			$("tbody#parameter-body").append(pv.template({parameter:p.toJSON()}));
+
+			$("ul#parameter-ul").append(pv.template({parameter:p.toJSON()}));
 		});
 	}
 });
@@ -88,14 +109,26 @@ var ParameterTableView = Backbone.View.extend({
 var PlotView = Backbone.View.extend({
 	el: "#plots",
 
-	intialize: function() {},
+	intialize: function() {
+		this.model = this.options.model;
+	},
 
-	template : _.template($("#plot-message").html()),
+	template : _.template($("#plot-template").html()),
 
 	render: function() {
-		var that = this;
-		$(this.el).html(that.template());
+		$(this.el).html(this.template());
+
+		$.plot($("#placeholder"), this.model.get('data'), this.model.get('options'));
+
+		$('.xlabel').html(this.model.get('xlabel'));
+		$('.ylabel').html(this.model.get('ylabel'));
+		$('.title').html(this.model.get('title'));
 	}
 });
+
+
+
+
+
 
 
