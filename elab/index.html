@@ -2,28 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CMS Public Data</title>
+    <title>CMS e-Lab</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/bootstrapSwitch.css" rel="stylesheet">
 
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
 
-      #placeholder {
+      .placeholder {
         width: 758px; 
         height: 380px; 
         margin-bottom: 26px; 
         margin-left: 26px; 
         padding: 0px; 
         position: center;
+        border: 1px;
       }
 
-      #plot-controls {
+      .plot-controls {
         position: center;
       }
 
@@ -48,10 +50,16 @@
         -webkit-transform: rotate(-90deg); 
         -moz-transform: rotate(-90deg);
       }
+
+      .switch span.switch-primary, .switch span.switch-left {
+        background: -moz-linear-gradient(bottom , #6D84A2, #A8B6CA);
+        background-image: -webkit-linear-gradient(bottom , #6D84A2, #A8B6CA);
+        color: white;
+      }
     </style>
-    <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -144,6 +152,7 @@
     <div class="container" id="table">
 
     <script type="text/template" id="parameters-table-template">
+    <h3>Select one or more parameters:</h3>
     <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
     
     <thead>
@@ -157,8 +166,30 @@
 
     <tbody id="parameter-body"></tbody>
 
+    <!--
+    <tbody id="parameter-body">
+    <% _.each(parameters, function(parameter) { %>
+      <tr>
+      <td><%= parameter.name %></td>
+      <td><%= parameter.unit %></td>
+      <td><%= parameter.description %></td>
+      <td>
+      <div class="switch parameter-row" id="<%= parameter.name %>" data-animated="false" data-on-label="YES" data-off-label="NO">
+      <input type="checkbox">
+      </div>
+      </td>
+      </tr>
+    <% }); %>
+    </tbody>
+    -->
+
     </table>
 
+    <div class="row-fluid">
+    <div class="span4 offset4">         
+    <a href="#/plots/" class="btn btn-block">Plot parameter(s)</a>
+    </div>
+    </div>
     </script>
 
     <script type="text/template" id="parameter-row-template">
@@ -167,7 +198,9 @@
     <td><%= parameter.unit %></td>
     <td><%= parameter.description %></td>
     <td>
-    <input id="<%= parameter.name %>" class="btn parameter-select" type="submit" data-toggle="buttons-radio" value="">
+    <div class="switch parameter-row" id="<%= parameter.name %>" data-animated="false" data-on-label="YES" data-off-label="NO">
+    <input type="checkbox">
+    </div>
     </td>
     </tr>
     </script>
@@ -177,14 +210,17 @@
 
     <div class="container" id="plots">
 
-    <script type="text/template" id="plot-template">
+    <script type="text/template" id="plot-page-template">
     <ul class="breadcrumb">
       <li class="active">Select dataset  <span class="divider">/</span></li>
       <li class="active">Select parameter<span class="divider">/</span></li>
       <li class="active">Plot parameter</li>
     </ul>
+    </script>
 
-    <div id="plot-controls">
+    <script type="text/template" id="plot-template">
+    <div class="plot">
+    <div class="plot-controls">
     <table>
     <tr>
 
@@ -192,7 +228,7 @@
     <form class="navbar-form pull-left">
     Y Max:
     <input type="text" class="span1">
-    <button type="submit" class="btn">Set</button>
+    <button type="button" id="ymax" class="btn">Set</button>
     </form>
     </td>
 
@@ -209,7 +245,7 @@
     <form class="navbar-form pull-left">
     Bin Width:
     <input type="text" class="span1">
-    <button type="submit" class="btn">Set</button>
+    <button type="submit" id="binwidth" class="btn">Set</button>
     </form>
     </td>
 
@@ -217,17 +253,20 @@
     </table>
     </div>
 
-    <!--<div class="title"></div>-->
-    <div id="placeholder"></div>
-    <!--<div class="xlabel"></div>-->
-    <!--<div class="ylabel"></div>-->
-   
+    <div class="title"></div>
+    <div class="placeholder"></div>
+    </div>
     </script>
 
     </div> <!-- End of plots div -->
 
     </div> <!-- End of full container -->
-
+ 
+    <!--
+    flot doesn't work with this version of jquery
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    -->
+    
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap-transition.js"></script>
     <script src="../assets/js/bootstrap-alert.js"></script>
@@ -241,7 +280,9 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
-
+    
+    <script src="../js/bootstrapSwitch.js"></script>
+    
     <script src="../js/underscore-min.js"></script>
     <script src="../js/backbone-min.js"></script>
     <script src="../js/jquery.flot.js"></script>
@@ -250,14 +291,15 @@
     <script src="../js/views.js"></script>
     <script src="../js/routers.js"></script>
     <script src="../js/elab.js"></script>
-
+    
     <script type="text/javascript">
-    $("#logx").click(function() {
-      console.log("logx");
-    });
-  
-    $("#logy").click(function() {
-      console.log("logy");
+    $('.parameter-row').on('switch-change', function (e, data) {
+      var pid = $(this).attr('id');
+      var selected = data.value;
+      
+      var dataset = datasets.getSelected().at(0);
+      var parameters = dataset.get('parameters');
+      parameters.get(pid).set('selected', selected);
     });
     </script>
 

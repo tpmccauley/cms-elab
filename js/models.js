@@ -5,13 +5,32 @@ var Dataset = Backbone.Model.extend({
 		description: "0 events of no particles",
 		image: "",
 		url: "",
-		content: "Here is a bit of text describing the contents of the dataset"
+		content: "Here is a bit of text describing the contents of the dataset",
+		selected: false
 	},
+
+	/*
+	initialize: function() {
+        this.bind('change:selected', this.datasetSelected);
+    },
+
+	datasetSelected: function() {
+		console.log(this.get('name'), this.get('selected'));
+	},
+	*/
+
 	idAttribute: "id"
 });
 
 var Datasets = Backbone.Collection.extend({
-	model: Dataset
+	model: Dataset,
+
+	getSelected: function() {
+		selected = this.filter(function(d){
+			return d.get('selected') == true;
+		});
+		return new Datasets(selected);
+	}
 });
 
 var Parameter = Backbone.Model.extend({
@@ -20,11 +39,30 @@ var Parameter = Backbone.Model.extend({
 		unit: "Hectacres",
 		description: "I am a parameter",
 		selected: false
-	}
+	},
+
+	/*
+	initialize: function() {
+		this.bind('change:selected', this.parameterSelected);
+	},
+
+	parameterSelected: function() {
+		console.log(this.get('name'), this.get('selected'));
+	},
+	*/
+
+	idAttribute: "id"
 });
 
 var Parameters = Backbone.Collection.extend({
-	model: Parameter
+	model: Parameter,
+
+	getSelected: function() {
+		selected = this.filter(function(p){
+			return p.get('selected') == true;
+		});
+		return new Parameters(selected);
+	}
 });
 
 var Plot = Backbone.Model.extend({
@@ -63,10 +101,14 @@ var Plot = Backbone.Model.extend({
 		xlabel: "default x label",
 		ylabel: "default y label",
 		title:  "default title"
-	}
+	},
+
+	idAttribute: "id"
 });
 
-
+var Plots = Backbone.Collection.extend({
+	model: Plot
+});
 
 
 

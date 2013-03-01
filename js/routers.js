@@ -1,21 +1,16 @@
 var ElabRouter = Backbone.Router.extend({
 	routes: {
 		"": "gotoDatasets",
-		"parameters/:name": "selectDataset",
-		"plot/:parameter": "gotoPlot"
+		"parameters/:name": "gotoParameters",
+		"plots/": "gotoPlot"
 	},
 
+	// This is temporary until I sort out models/collections
 	elabState: {
 		dataset: "",
-		parameter: "",
+		parameters: [],
 		rawData: [],
-		filteredData: [],
-		histogram: [],
-
-		log: function() {
-			console.log("dataset: " + this.dataset);
-			console.log("parameter: " + this.parameter);
-		}
+		filteredData: []
 	},
 
 	getData: function(dataurl) {
@@ -43,27 +38,8 @@ var ElabRouter = Backbone.Router.extend({
 		$("#plots").hide();
 	},
 
-	gotoPlot: function(parameter) {
-		this.elabState.parameter = parameter;
-	
-		var dataset = datasets.get(this.elabState.dataset);
-		this.getData(dataset.get('url'));
-
-		this.elabState.filteredData = this.elabState.rawData.map(function(d) {return d[parameter];});
-
-		this.buildHistogram();
-		var plot = new Plot({data: [this.elabState.histogram]});
-		plotView.model = plot;
-		plotView.render();
-
-		$("#datasets").hide();
-		$("#parameters").hide();
-		$("#plots").show();
-	},	
-
-	buildHistogram: function() {
+	buildHistogram: function(data) {
 		var binWidth = 0.1;
-		var data = this.elabState.filteredData;
 		var h = [];
 		var histmin = 999999;
 		var histmax = 0;
@@ -110,24 +86,42 @@ var ElabRouter = Backbone.Router.extend({
 			last = y;
 		}
 
-		this.elabState.histogram = histogram;
-		//console.log(this.elabState.histogram);
+		return histogram;
 	},
 
-	selectDataset: function(name) {
+	gotoParameters: function(name) {
 		this.elabState.dataset = name;
-		this.elabState.log();
 
+		datasets.get(name).set('selected', true);
 		var parameters = datasets.get(name).get('parameters');
-		console.log(parameters);
 
 		parameterTableView.collection = parameters;
-		parameterDropdownView.collection = parameters;
-
-		parameterDropdownView.render();
+		parameterTableView.render();
 
 		$("#datasets").hide();
 		$("#parameters").show();
 		$("#plots").hide();
-	}
+	},
+
+	gotoPlot: function() {
+		var dataset = datasets.get(this.elabState.dataset);
+		this.getData(dataset.get('url'));
+
+		var that = this;
+		dataset.get('parameters').getSelected().forEach(function(p) {
+			var name = p.get('name');
+			var histogram = that.buildHistogram(that.elabState.rawData.map(function(d) {return d[name];}));
+			var plot = new Plot({data: [histogram], title: name});
+			plots.add(plot);
+		});
+
+		console.log("Number of plots: " + plots.length);
+
+		plotPageView.collection = plots;
+		plotPageView.render();
+
+		$("#datasets").hide();
+		$("#parameters").hide();
+		$("#plots").show();
+	}	
 });
