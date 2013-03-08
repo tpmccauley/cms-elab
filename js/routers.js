@@ -93,9 +93,12 @@ var ElabRouter = Backbone.Router.extend({
 		this.elabState.dataset = name;
 
 		datasets.get(name).set('selected', true);
-		var parameters = datasets.get(name).get('parameters');
+		datasets.get(name).get('parameters').deselectAll();
 
-		parameterTableView.collection = parameters;
+		parameterImageView.collection = datasets.get(name).get('parameters');
+		parameterImageView.render();
+
+		parameterTableView.collection = datasets.get(name).get('parameters');
 		parameterTableView.render();
 
 		$("#datasets").hide();
@@ -104,16 +107,18 @@ var ElabRouter = Backbone.Router.extend({
 	},
 
 	gotoPlot: function() {
-		var dataset = datasets.get(this.elabState.dataset);
-		this.getData(dataset.get('url'));
+		this.getData(datasets.get(this.elabState.dataset).get('url'));
 
 		var that = this;
-		dataset.get('parameters').getSelected().forEach(function(p) {
-			var name = p.get('name');
-			var histogram = that.buildHistogram(that.elabState.rawData.map(function(d) {return d[name];}));
-			var plot = new Plot({data: [histogram], title: name});
-			plots.add(plot);
-		});
+		datasets.get(this.elabState.dataset)
+				.get('parameters')
+				.getSelected()
+				.forEach(function(p) {
+					var name = p.get('name');
+					var histogram = that.buildHistogram(that.elabState.rawData.map(function(d) {return d[name];}));
+					var plot = new Plot({data: [histogram], title: name});
+					plots.add(plot);
+				});
 
 		console.log("Number of plots: " + plots.length);
 

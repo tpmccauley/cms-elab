@@ -17,12 +17,12 @@ var DatasetImageView = Backbone.View.extend({
 
 	initialize: function() {
 		this.collection = this.options.collection;
-	},
+	},	
 
 	template: _.template($("#dataset-images").html()),
 
 	render: function() {
-		$(this.el).append(this.template({datasets: this.collection.toJSON()}));
+		$(this.el).html(this.template({datasets: this.collection.toJSON()}));
 		this.renderPopover();
 	},
 
@@ -40,6 +40,36 @@ var DatasetImageView = Backbone.View.extend({
 		});
 	}
 });
+
+var ParameterImageView = Backbone.View.extend({
+	el: "#parameter-images",
+
+	initialize: function() {
+		this.collection = this.options.collection;
+	},
+
+	template: _.template($("#parameter-images-template").html()),
+
+	render: function() {
+		$(this.el).html(this.template({parameters: this.collection.toJSON()}));
+		this.renderPopover();
+	},
+
+	renderPopover: function() {
+		this.collection.forEach(function(p) {
+
+			var options = {
+				trigger: "hover",
+				title:	function() {return p.get("name");},
+				content: function() {return p.get("description");},
+				placement: "bottom"		
+			};
+
+			$("img."+p.get("name")).popover(options);
+		});
+	}
+});
+
 
 var ParameterRowView = Backbone.View.extend({
 	el: "tr",
@@ -105,8 +135,8 @@ var ParameterDropdownView = Backbone.View.extend({
 	render: function() {
 		$(this.el).html(this.template());
 
-		console.log(this.template());
-
+		console.log(this.template())
+;
 		this.collection.each(function(p) {
 			pv = new ParameterItemView();
 			pv.model = p;
@@ -125,9 +155,12 @@ var PlotView = Backbone.View.extend({
 	template : _.template($("#plot-template").html()),
 
 	render: function() {
-		$(this.el).append(this.template());
-		//$.plot($(".placeholder"), this.model.get('data'), this.model.get('options'));
-		//$('.title').html(this.model.get('title'));
+
+		console.log(this.model.toJSON());
+
+		$(this.el).append(this.template({plot: this.model.toJSON()}));
+		$.plot($("#"+this.model.get('title')+" .placeholder"), this.model.get('data'), this.model.get('options'));
+		$('#'+this.model.get('title')+' .title').html(this.model.get('title'));
 	}
 });
 

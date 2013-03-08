@@ -62,6 +62,12 @@ var Parameters = Backbone.Collection.extend({
 			return p.get('selected') == true;
 		});
 		return new Parameters(selected);
+	},
+
+	deselectAll: function() {
+		this.each(function(p) {
+			p.set('selected', false);
+		});
 	}
 });
 
@@ -95,7 +101,16 @@ var Plot = Backbone.Model.extend({
 
     		yaxis: { 
     			autoscaleMargin: 0.1 
-    		}
+    		},
+
+			crosshair: {
+				mode: "x" 
+			},
+
+			selection: {
+				mode: "x",
+				color: "yellow"
+			}
 		},
 
 		xlabel: "default x label",
@@ -109,8 +124,3 @@ var Plot = Backbone.Model.extend({
 var Plots = Backbone.Collection.extend({
 	model: Plot
 });
-
-
-
-
-

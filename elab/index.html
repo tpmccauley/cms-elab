@@ -9,6 +9,7 @@
 
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
     <link href="../assets/css/bootstrapSwitch.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
 
     <style>
       body {
@@ -56,6 +57,28 @@
         background-image: -webkit-linear-gradient(bottom , #6D84A2, #A8B6CA);
         color: white;
       }
+
+      .btn.active {
+        background-color: #A8B6CA;
+      }
+
+      .mini-layout {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-radius: 6px 6px 6px 6px;
+        height: 300px;
+        background-color: #f5f5f5;
+        width: 100%;
+      } 
+
+      img:hover {
+        border: 3px solid #f5dcc5;
+      } 
+
+      .plot {
+        border: 1px dashed #cccccc; 
+      }
+
     </style>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -84,8 +107,8 @@
           
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="../index.html">CMS e-Lab Home</a></li>
-              <li class="active"><a href="#">Explore</a></li>
+              <li><a href="../index.html"><i class="icon-home icon-white"></i> CMS e-Lab Home</a></li>
+              <li class="active"><a href="#"><i class="icon-road icon-white"></i> Explore</a></li>
             </ul>
           </div>
 
@@ -103,6 +126,8 @@
 
     <div class="container" id="datasets">
 
+    <div class="container" id
+
     <script type="text/template" id="dataset-list">
     <ul class="breadcrumb">
       <li class="active">Select dataset</a>
@@ -117,10 +142,13 @@
     </script>
 
     <script type="text/template" id="dataset-images">
+    <ul class="breadcrumb">
+    <li class="active">Select dataset</li>
+    </ul>
     <h3>Click on a diagram below to access the data:</h3>
     <% _.each(datasets, function(dataset) { %>
       <a class='dataset-image' href='#/parameters/<%= dataset.name %>' >
-      <img rel='popover' class=<%= dataset.type %> src=<%= dataset.image %> class='img-rounded'></img>
+      <img rel='popover' src=<%= dataset.image %> class='<%= dataset.type %> img-rounded img-polaroid'></img>
       </a>
     <% }); %>
     </script>
@@ -129,82 +157,98 @@
 
     <div class="container" id="parameters">
 
-    <div class="container" id="dropdown">
+      <div class="container" id="parameter-images">
+        <script type="text/template" id="parameter-images-template">
+          <ul class="breadcrumb">
+          <li class="active">Select dataset<span class="divider">/</span></li>
+          <li class="active">Select parameter</li>
+          </ul>
 
-    <script type="text/template" id="parameters-dropdown-template">
-    <ul class="breadcrumb">
-      <li class="active">Select dataset<span class="divider">/</span></li>
-      <li class="active">Select parameter</li>
-    </ul>
+          <h3>Select one or more parameters:</h3>
 
-    <div class="btn-group">
-      <a class="btn">Select a parameter</a>
-      <a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-      <ul class="dropdown-menu" id="parameter-ul"></ul>
-    </div>
-    </script>
-    
-    <script type="text/template" id="parameter-li-template">
-    <li><a href='#/plot/<%= parameter.name %>'><%= parameter.name %></a></li>
-    </script>
-    </div>
-
-    <div class="container" id="table">
-
-    <script type="text/template" id="parameters-table-template">
-    <h3>Select one or more parameters:</h3>
-    <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
-    
-    <thead>
-    <tr>
-    <th>Parameter</th>
-    <th>Unit</th>
-    <th>Description</th>
-    <th>Select</th>
-    </tr>
-    </thead>
-
-    <tbody id="parameter-body"></tbody>
-
-    <!--
-    <tbody id="parameter-body">
-    <% _.each(parameters, function(parameter) { %>
-      <tr>
-      <td><%= parameter.name %></td>
-      <td><%= parameter.unit %></td>
-      <td><%= parameter.description %></td>
-      <td>
-      <div class="switch parameter-row" id="<%= parameter.name %>" data-animated="false" data-on-label="YES" data-off-label="NO">
-      <input type="checkbox">
+          <% _.each(parameters, function(parameter) { %>
+            <!--<img rel='popover' src=<%= parameter.image %> data-toggle="button" id=<%= parameter.name %> class='parameter-select img-rounded img-polaroid btn'></img>-->
+            <button type='button' data-toggle='button' rel='popover' id=<%= parameter.name %> class='btn btn-large parameter-select'><%= parameter.name %></button>
+          <% }); %>
+         
+          <p>
+          <div class="row-fluid">
+          <div class="span2">         
+          <a href="#/plots/" class="btn btn-block">Plot parameter(s) <i class="icon-chevron-right"></i></a>
+          </div>
+          </div>
+          </p>
+        </script>
       </div>
-      </td>
-      </tr>
-    <% }); %>
-    </tbody>
-    -->
 
-    </table>
+      <div class="container" id="dropdown">
+        <script type="text/template" id="parameters-dropdown-template">
+          <ul class="breadcrumb">
+          <li class="active">Select dataset<span class="divider">/</span></li>
+          <li class="active">Select parameter</li>
+          </ul>
+          <div class="btn-group">
+            <a class="btn">Select a parameter</a>
+            <a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu" id="parameter-ul"></ul>
+          </div>
+        </script>
+    
+        <script type="text/template" id="parameter-li-template">
+          <li><a href='#/plot/<%= parameter.name %>'><%= parameter.name %></a></li>
+        </script>
+      </div>
 
-    <div class="row-fluid">
-    <div class="span4 offset4">         
-    <a href="#/plots/" class="btn btn-block">Plot parameter(s)</a>
-    </div>
-    </div>
-    </script>
+      <div class="container" id="table">
+        <script type="text/template" id="parameters-table-template">
+          <hr>
+          <p>
+          <a data-toggle="collapse" href="#parameter-info"><i class="icon-question-sign"></i> Parameter information</a>
+          </p>
 
-    <script type="text/template" id="parameter-row-template">
-    <tr>
-    <td><%= parameter.name %></td>
-    <td><%= parameter.unit %></td>
-    <td><%= parameter.description %></td>
-    <td>
-    <div class="switch parameter-row" id="<%= parameter.name %>" data-animated="false" data-on-label="YES" data-off-label="NO">
-    <input type="checkbox">
-    </div>
-    </td>
-    </tr>
-    </script>
-    </div>
+          <div id="parameter-info" class="collapse">
+
+          <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
+    
+          <thead>
+          <tr>
+          <th>Name</th>
+          <th>Unit</th>
+          <th>Description</th>
+          </tr>
+          </thead>
+
+          <tbody id="parameter-body"></tbody>
+
+          <!--
+          <tbody id="parameter-body">
+          <% _.each(parameters, function(parameter) { %>
+            <tr>
+            <td><%= parameter.name %></td>
+            <td><%= parameter.unit %></td>
+            <td><%= parameter.description %></td>
+            <td>
+            <div class="switch parameter-row" id="<%= parameter.name %>" data-animated="false" data-on-label="YES" data-off-label="NO">
+            <input type="checkbox">
+            </div>
+            </td>
+            </tr>
+          <% }); %>
+          </tbody>
+          -->
+
+          </table>
+          </div>
+        </script>
+
+        <script type="text/template" id="parameter-row-template">
+          <tr>
+          <td><%= parameter.name %></td>
+          <td><%= parameter.unit %></td>
+          <td><%= parameter.description %></td>
+          </tr>
+        </script>
+      </div> <!-- End of table div -->
 
     </div> <!-- End of parameters div -->
 
@@ -219,55 +263,68 @@
     </script>
 
     <script type="text/template" id="plot-template">
+
+    <div id="<%= plot.title %>">
     <div class="plot">
-    <div class="plot-controls">
-    <table>
-    <tr>
 
-    <td>
-    <form class="navbar-form pull-left">
-    Y Max:
-    <input type="text" class="span1">
-    <button type="button" id="ymax" class="btn">Set</button>
-    </form>
-    </td>
+      <div class="plot-controls">
+      <table>
+      <tr>
 
-    <td><span class="span1"></td>
+      <td>
+      <form class="navbar-form pull-left">
+      Y Max:
+      <input type="text" class="span1">
+      <button type="button" id="ymax" class="btn">Set</button>
+      </form>
+      </td>
 
-    <td>
-    <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
-    <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
-    </td>
+      <td><span class="span1"></td>
 
-    <td><span class="span1"></td>
+      <td>
+      <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
+      <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
+      </td>
 
-    <td>
-    <form class="navbar-form pull-left">
-    Bin Width:
-    <input type="text" class="span1">
-    <button type="submit" id="binwidth" class="btn">Set</button>
-    </form>
-    </td>
+      <td><span class="span1"></td>
 
-    </tr>
-    </table>
+      <td>
+      <form class="navbar-form pull-left">
+      Bin Width:
+      <input type="text" class="span1">
+      <button type="submit" id="binwidth" class="btn">Set</button>
+      </form>
+      </td>
+
+      </tr>
+      </table>
+      </div>
+
+      <div class="title"></div>
+      <div class="placeholder"></div>
+    
     </div>
-
-    <div class="title"></div>
-    <div class="placeholder"></div>
     </div>
     </script>
 
     </div> <!-- End of plots div -->
 
     </div> <!-- End of full container -->
- 
+
     <!--
     flot doesn't work with this version of jquery
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     -->
     
     <script src="../assets/js/jquery.js"></script>
+
+    <!--
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    -->
+
+    <script src="../js/bootstrapSwitch.js"></script>
+
     <script src="../assets/js/bootstrap-transition.js"></script>
     <script src="../assets/js/bootstrap-alert.js"></script>
     <script src="../assets/js/bootstrap-modal.js"></script>
@@ -280,9 +337,7 @@
     <script src="../assets/js/bootstrap-collapse.js"></script>
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
-    
-    <script src="../js/bootstrapSwitch.js"></script>
-    
+      
     <script src="../js/underscore-min.js"></script>
     <script src="../js/backbone-min.js"></script>
     <script src="../js/jquery.flot.js"></script>
@@ -292,15 +347,39 @@
     <script src="../js/routers.js"></script>
     <script src="../js/elab.js"></script>
     
+    <!--
     <script type="text/javascript">
-    $('.parameter-row').on('switch-change', function (e, data) {
-      var pid = $(this).attr('id');
-      var selected = data.value;
+    $(function() {
+      $(".draggable").draggable({
+        axis:"y",
+        containment: "parent"
+      });
       
-      var dataset = datasets.getSelected().at(0);
-      var parameters = dataset.get('parameters');
-      parameters.get(pid).set('selected', selected);
+      $("#droppable").droppable();
     });
+    </script>
+    -->
+    <!--
+    <script type="text/javascript">
+    $(function () {
+      $('.parameter-row').on('switch-change', function (e, data) {
+        var pid = $(this).attr('id');
+        var selected = data.value;
+      });
+    });
+    </script>
+    -->
+    <script type="text/javascript">
+
+        $(".parameter-select").click(function() {
+          var pid = $(this).attr('id');
+          var selected = ! $(this).hasClass('active');
+
+          console.log(pid, selected);
+
+          var dataset = datasets.getSelected().at(0);
+          dataset.get('parameters').get(pid).set('selected', selected);
+        });
     </script>
 
   </body>

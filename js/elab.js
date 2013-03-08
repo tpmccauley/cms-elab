@@ -67,13 +67,15 @@ dimuon_dataset.set({
 // Add the datasets to the Dataset Collection
 var datasets = new Datasets();
 
+/*
 datasets.on("add", function(ds) {
-	console.log("Added dataset: " + ds.get("name"));
+	console.log("Added dataset: " + ds.get("id"));
 });
 
 datasets.on("remove", function(ds) {
-	console.log("Removed dataset: " + ds.get("name"));
+	console.log("Removed dataset: " + ds.get("id"));
 });
+*/
 
 // We could parse the data files to fetch the parameters but there
 // is no information on the units nor is there a description of what 
@@ -83,62 +85,34 @@ datasets.on("remove", function(ds) {
 // the schema here.
 
 var W_parameters = new Parameters([
-	{"name":"E", "unit":"GeV", "description":"The total energy of the lepton", id:"E", selected:false},
-	{"name":"MET", "unit":"GeV", "description":"The missing transverse energy due to the neutrino", id:"MET", selected:false},
-	{"name":"phiMET", "unit":"radians", "description":"The phi angle of the missing transverse energy", id:"phiMET", selected:false},
-	{"name":"eta", "unit":"", "description":"The pseudorapidity of the lepton", id:"eta", selected:false},
-	{"name":"phi", "unit":"radians", "description":"The phi angle of the lepton direction", id:"phi", selected:false},
-	{"name":"pt", "unit":"GeV", "description":"The transverse momentum of the lepton", id:"pt", selected:false}
+	{name:"E", unit:"GeV", description:"The total energy of the lepton", id:"E", selected:false, image:"../img/E.gif"},
+	{name:"MET", unit:"GeV", description:"The missing transverse energy due to the neutrino", id:"MET", selected:false, image:"../img/MET.gif"},
+	{name:"phiMET", unit:"radians", description:"The phi angle of the missing transverse energy", id:"phiMET", selected:false, image:"../img/phiMET.gif"},
+	{name:"eta", unit:"", description:"The pseudorapidity of the lepton", id:"eta", selected:false, image:"../img/eta.gif"},
+	{name:"phi", unit:"radians", description:"The phi angle of the lepton direction", id:"phi", selected:false, image:"../img/phi.gif"},
+	{name:"pt", unit:"GeV", description:"The transverse momentum of the lepton", id:"pt", selected:false, image:"../img/pt.gif"}
 ]);
 
-var Z_parameters = new Parameters([
-	{"name":"E1", "unit":"GeV", "description":"The total energy of the first lepton", id:"E1", selected:false},
-	{"name":"pt1", "unit":"GeV", "description":"The transverse momentum of the first lepton", id:"pt1", selected:false},
-	{"name":"eta1", "unit":"", "description":"The pseudorapidity of the first lepton", id:"eta1", selected:false},
-	{"name":"phi1", "unit":"radians", "description":"The phi angle of the first lepton direction", id:"phi1", selected:false},
-	{"name":"Q1", "unit":"", "description":"The charge of the first lepton", id:"Q1", selected:false},
-	{"name":"E2", "unit":"GeV", "description":"The total energy of the second lepton", id:"E2", selected:false},
-	{"name":"pt2", "unit":"GeV", "description":"The transverse momentum of the second lepton", id:"pt2", selected:false},
-	{"name":"eta2", "unit":"", "description":"The pseudorapidity of the second lepton", id:"eta2", selected:false},
-	{"name":"phi2", "unit":"radians", "description":"The phi angle of the second lepton direction", id:"phi2", selected:false},
-	{"name":"Q2", "unit":"", "description":"The charge of the second lepton", id:"Q2", selected:false},
-	{"name":"M", "unit":"GeV", "description":"The invariant mass of the two leptons", id:"M", selected:false}
+var dilepton_parameters = new Parameters([
+	{name:"E1", unit:"GeV", description:"The total energy of the first lepton", id:"E1", selected:false, image:"../img/E1.gif"},
+	{name:"pt1", unit:"GeV", description:"The transverse momentum of the first lepton", id:"pt1", selected:false, image:"../img/pt1.gif"},
+	{name:"eta1", unit:"", description:"The pseudorapidity of the first lepton", id:"eta1", selected:false, image:"../img/eta1.gif"},
+	{name:"phi1", unit:"radians", description:"The phi angle of the first lepton direction", id:"phi1", selected:false, image:"../img/phi1.gif"},
+	{name:"Q1", unit:"", description:"The charge of the first lepton", id:"Q1", selected:false, image:"../img/Q1.gif"},
+	{name:"E2", unit:"GeV", description:"The total energy of the second lepton", id:"E2", selected:false, image:"../img/E2.gif"},
+	{name:"pt2", unit:"GeV", description:"The transverse momentum of the second lepton", id:"pt2", selected:false, image:"../img/pt2.gif"},
+	{name:"eta2", unit:"", description:"The pseudorapidity of the second lepton", id:"eta2", selected:false, image:"../img/eta2.gif"},
+	{name:"phi2", unit:"radians", description:"The phi angle of the second lepton direction", id:"phi2", selected:false, image:"../img/phi2.gif"},
+	{name:"Q2", unit:"", description:"The charge of the second lepton", id:"Q2", selected:false, image:"../img/Q2.gif"},
+	{name:"M", unit:"GeV", description:"The invariant mass of the two leptons", id:"M", selected:false, image:"../img/M.gif"}
 ]);
 
-var Jpsi_parameters = new Parameters([
-	{"name":"E1", "unit":"GeV", "description":"The total energy of the first lepton", id:"E1", selected:false},
-	{"name":"pt1", "unit":"GeV", "description":"The transverse momentum of the first lepton", id:"pt1", selected:false},
-	{"name":"eta1", "unit":"", "description":"The pseudorapidity of the first lepton", id:"eta1", selected:false},
-	{"name":"phi1", "unit":"radians", "description":"The phi angle of the first lepton direction", id:"phi1", selected:false},
-	{"name":"Q1", "unit":"", "description":"The charge of the first lepton", id:"Q1", selected:false},
-	{"name":"E2", "unit":"GeV", "description":"The total energy of the second lepton", id:"E2", selected:false},
-	{"name":"pt2", "unit":"GeV", "description":"The transverse momentum of the second lepton", id:"pt2", selected:false},
-	{"name":"eta2", "unit":"", "description":"The pseudorapidity of the second lepton", id:"eta2", selected:false},
-	{"name":"phi2", "unit":"radians", "description":"The phi angle of the second lepton direction", id:"phi2", selected:false},
-	{"name":"Q2", "unit":"", "description":"The charge of the second lepton", id:"Q2", selected:false},
-	{"name":"M", "unit":"GeV", "description":"The invariant mass of the two leptons", id:"M", selected:false}
-]);
-
-var dimuon_parameters = new Parameters([
-	{"name":"E1", "unit":"GeV", "description":"The total energy of the first lepton", selected:false},
-	{"name":"pt1", "unit":"GeV", "description":"The transverse momentum of the first lepton", selected:false},
-	{"name":"eta1", "unit":"", "description":"The pseudorapidity of the first lepton", selected:false},
-	{"name":"phi1", "unit":"radians", "description":"The phi angle of the first lepton direction", selected:false},
-	{"name":"Q1", "unit":"", "description":"The charge of the first lepton", selected:false},
-	{"name":"E2", "unit":"GeV", "description":"The total energy of the second lepton", selected:false},
-	{"name":"pt2", "unit":"GeV", "description":"The transverse momentum of the second lepton", selected:false},
-	{"name":"eta2", "unit":"", "description":"The pseudorapidity of the second lepton", selected:false},
-	{"name":"phi2", "unit":"radians", "description":"The phi angle of the second lepton direction", selected:false},
-	{"name":"Q2", "unit":"", "description":"The charge of the second lepton", selected:false},
-	{"name":"M", "unit":"GeV", "description":"The invariant mass of the two leptons", selected:false}
-]);
-
-jpsi_dataset.set('parameters', Jpsi_parameters);
-zee_dataset.set('parameters', Z_parameters);
-zmumu_dataset.set('parameters', Z_parameters);
+jpsi_dataset.set('parameters', dilepton_parameters);
+zee_dataset.set('parameters', dilepton_parameters);
+zmumu_dataset.set('parameters', dilepton_parameters);
 wenu_dataset.set('parameters', W_parameters);
 wmunu_dataset.set('parameters', W_parameters);
-dimuon_dataset.set('parameters', dimuon_parameters);
+dimuon_dataset.set('parameters', dilepton_parameters);
 
 datasets.add(jpsi_dataset);
 datasets.add(zee_dataset);
@@ -154,7 +128,9 @@ datasetListView.render();
 datasetImageView.render();
 
 var parameterTableView = new ParameterTableView();
-var parameterDropdownView = new ParameterDropdownView();
+//var parameterDropdownView = new ParameterDropdownView();
+var parameterImageView = new ParameterImageView();
+
 var plotPageView = new PlotPageView();
 
 var plots = new Plots();

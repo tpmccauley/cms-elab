@@ -159,6 +159,7 @@
   background-image: linear-gradient(bottom, #ffffff, #e6e6e6);
 }
 /* line 147, ../sass/bootstrapSwitch.scss */
+
 .switch span.switch-primary, .switch span.switch-left {
   color: white;
   background: #0088cc;
@@ -168,6 +169,7 @@
   background-image: -o-linear-gradient(bottom, #0088cc, #0055cc);
   background-image: linear-gradient(bottom, #0088cc, #0055cc);
 }
+
 /* line 152, ../sass/bootstrapSwitch.scss */
 .switch span.switch-info {
   color: white;
