@@ -126,146 +126,131 @@
 
     <div class="container" id="datasets">
 
-    <div class="container" id
+    <script type="text/template" id="dataset-page">
+      <ul class="breadcrumb">
+      <li class="active">Select dataset</li>
+      </ul>
+      
+      <ul class="nav nav-tabs">
+      <li class="active"><a data-target="#dataset-views" data-toggle="tab">Datasets</a></li>
+      <li><a data-target="#dataset-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
+      </ul>
+
+      <div class="tab-content">
+      <div class="container tab-pane" id="dataset-views"></div>
+      <div class="container tab-pane" id="dataset-information">
+      <ul>
+      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S003&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">electron</a></li>
+      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S004&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">muon</a></li>
+      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=M070&exp=Y&inscript=Y&sub=Yr&return=MXXX025">J/&#0968</a></li>
+      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S044&exp=Y">Z</a></li>
+      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S043&exp=Y">W</a></li>
+      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S066&exp=Y">neutrinos</a></li>
+      </ul>
+      </div>
+      </div>
+    </script>
 
     <script type="text/template" id="dataset-list">
-    <ul class="breadcrumb">
-      <li class="active">Select dataset</a>
-    </ul>
-
-    <h3>The following datasets are available:</h3>
-    <ul class="datasets">
-    <% _.each(datasets, function(dataset) { %>
-      <li><%= dataset.description %></li>
-    <% }); %>
-    </ul>
+      <h3>The following datasets are available:</h3>
+      <ul class="datasets">
+      <% _.each(datasets, function(dataset) { %>
+        <li><%= dataset.description %></li>
+      <% }); %>
+      </ul>
     </script>
 
     <script type="text/template" id="dataset-images">
-    <ul class="breadcrumb">
-    <li class="active">Select dataset</li>
-    </ul>
-    <h3>Click on a diagram below to access the data:</h3>
-    <% _.each(datasets, function(dataset) { %>
-      <a class='dataset-image' href='#/parameters/<%= dataset.name %>' >
-      <img rel='popover' src=<%= dataset.image %> class='<%= dataset.type %> img-rounded img-polaroid'></img>
-      </a>
-    <% }); %>
+      <h3>Click on a diagram below to access the data:</h3>
+      <% _.each(datasets, function(dataset) { %>
+        <a class='dataset-image' href='#/parameters/<%= dataset.name %>' >
+        <img rel='popover' src=<%= dataset.image %> class='<%= dataset.type %> img-rounded img-polaroid'></img>
+        </a>
+      <% }); %>
     </script>
     
-    </div> <!-- End of datasets div -->
-
+    </div>
+    
     <div class="container" id="parameters">
 
-      <div class="container" id="parameter-images">
-        <script type="text/template" id="parameter-images-template">
-          <ul class="breadcrumb">
-          <li class="active">Select dataset<span class="divider">/</span></li>
-          <li class="active">Select parameter</li>
-          </ul>
+    <script type="text/template" id="parameter-page">
+      <ul class="breadcrumb">
+      <li class="active">Select dataset<span class="divider">/</span></li>
+      <li class="active">Select parameter</li>
+      </ul>
+      
+      <ul class="nav nav-tabs">
+      <li class="active"><a data-target="#parameter-buttons" data-toggle="tab">Parameters</a></li>
+      <li><a data-target="#parameter-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
+      </ul>
 
-          <h3>Select one or more parameters:</h3>
+      <div class="tab-content">
+      <div class="container tab-pane" id="parameter-buttons"></div>
+      <div class="container tab-pane" id="parameter-information"></div>
+      </div>
+    </script>
 
-          <% _.each(parameters, function(parameter) { %>
-            <!--<img rel='popover' src=<%= parameter.image %> data-toggle="button" id=<%= parameter.name %> class='parameter-select img-rounded img-polaroid btn'></img>-->
-            <button type='button' data-toggle='button' rel='popover' id=<%= parameter.name %> class='btn btn-large parameter-select'><%= parameter.name %></button>
-          <% }); %>
+    <script type="text/template" id="parameter-buttons-template">
+      <h3>Select one or more parameters:</h3>
+
+      <% _.each(parameters, function(parameter) { %>
+      <button type='button' data-toggle='button' id=<%= parameter.name %> class='btn btn-large parameter-select'><%= parameter.name %></button>
+      <% }); %>
          
-          <p>
-          <div class="row-fluid">
-          <div class="span2">         
-          <a href="#/plots/" class="btn btn-block">Plot parameter(s) <i class="icon-chevron-right"></i></a>
-          </div>
-          </div>
-          </p>
-        </script>
+      <p>
+      <div class="row-fluid">
+      <div class="span2">         
+      <a href="#/plots/" class="btn btn-block">Plot parameter(s) <i class="icon-chevron-right"></i></a>
       </div>
-
-      <div class="container" id="dropdown">
-        <script type="text/template" id="parameters-dropdown-template">
-          <ul class="breadcrumb">
-          <li class="active">Select dataset<span class="divider">/</span></li>
-          <li class="active">Select parameter</li>
-          </ul>
-          <div class="btn-group">
-            <a class="btn">Select a parameter</a>
-            <a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-            <ul class="dropdown-menu" id="parameter-ul"></ul>
-          </div>
-        </script>
-    
-        <script type="text/template" id="parameter-li-template">
-          <li><a href='#/plot/<%= parameter.name %>'><%= parameter.name %></a></li>
-        </script>
       </div>
+      </p>
+    </script>
+      
+    <script type="text/template" id="parameters-table-template">
+      <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
+      <thead>
+      <tr>
+      <th>Name</th>
+      <th>Unit</th>
+      <th>Description</th>
+      </tr>
+      </thead>
+      <tbody id="parameter-body"></tbody>
+      </table>
+    </script>
 
-      <div class="container" id="table">
-        <script type="text/template" id="parameters-table-template">
-          <hr>
-          <p>
-          <a data-toggle="collapse" href="#parameter-info"><i class="icon-question-sign"></i> Parameter information</a>
-          </p>
-
-          <div id="parameter-info" class="collapse">
-
-          <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
-    
-          <thead>
-          <tr>
-          <th>Name</th>
-          <th>Unit</th>
-          <th>Description</th>
-          </tr>
-          </thead>
-
-          <tbody id="parameter-body"></tbody>
-
-          <!--
-          <tbody id="parameter-body">
-          <% _.each(parameters, function(parameter) { %>
-            <tr>
-            <td><%= parameter.name %></td>
-            <td><%= parameter.unit %></td>
-            <td><%= parameter.description %></td>
-            <td>
-            <div class="switch parameter-row" id="<%= parameter.name %>" data-animated="false" data-on-label="YES" data-off-label="NO">
-            <input type="checkbox">
-            </div>
-            </td>
-            </tr>
-          <% }); %>
-          </tbody>
-          -->
-
-          </table>
-          </div>
-        </script>
-
-        <script type="text/template" id="parameter-row-template">
-          <tr>
-          <td><%= parameter.name %></td>
-          <td><%= parameter.unit %></td>
-          <td><%= parameter.description %></td>
-          </tr>
-        </script>
-      </div> <!-- End of table div -->
-
-    </div> <!-- End of parameters div -->
+    <script type="text/template" id="parameter-row-template">
+      <tr>
+      <td><%= parameter.name %></td>
+      <td><%= parameter.unit %></td>
+      <td><%= parameter.description %></td>
+      </tr>
+    </script>
+    </div> 
 
     <div class="container" id="plots">
 
     <script type="text/template" id="plot-page-template">
-    <ul class="breadcrumb">
+      <ul class="breadcrumb">
       <li class="active">Select dataset  <span class="divider">/</span></li>
       <li class="active">Select parameter<span class="divider">/</span></li>
       <li class="active">Plot parameter</li>
-    </ul>
+      </ul>
+
+      <ul class="nav nav-tabs">
+      <li class="active"><a data-target="#plot-views" data-toggle="tab">Plots</a></li>
+      <li><a data-target="#plot-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
+      </ul>
+
+      <div class="tab-content">
+      <div class="container tab-pane" id="plot-views"></div>
+      <div class="container tab-pane" id="plot-information"></div>
+      </div>
     </script>
 
     <script type="text/template" id="plot-template">
-
-    <div id="<%= plot.title %>">
-    <div class="plot">
+      <div id="<%= plot.title %>">  
+      <div class="plot">
 
       <div class="plot-controls">
       <table>
@@ -303,26 +288,15 @@
       <div class="title"></div>
       <div class="placeholder"></div>
     
-    </div>
-    </div>
+      </div>
+      </div>
     </script>
 
     </div> <!-- End of plots div -->
 
     </div> <!-- End of full container -->
 
-    <!--
-    flot doesn't work with this version of jquery
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    -->
-    
     <script src="../assets/js/jquery.js"></script>
-
-    <!--
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-    -->
-
     <script src="../js/bootstrapSwitch.js"></script>
 
     <script src="../assets/js/bootstrap-transition.js"></script>
@@ -346,31 +320,8 @@
     <script src="../js/views.js"></script>
     <script src="../js/routers.js"></script>
     <script src="../js/elab.js"></script>
-    
-    <!--
+   
     <script type="text/javascript">
-    $(function() {
-      $(".draggable").draggable({
-        axis:"y",
-        containment: "parent"
-      });
-      
-      $("#droppable").droppable();
-    });
-    </script>
-    -->
-    <!--
-    <script type="text/javascript">
-    $(function () {
-      $('.parameter-row').on('switch-change', function (e, data) {
-        var pid = $(this).attr('id');
-        var selected = data.value;
-      });
-    });
-    </script>
-    -->
-    <script type="text/javascript">
-
         $(".parameter-select").click(function() {
           var pid = $(this).attr('id');
           var selected = ! $(this).hasClass('active');

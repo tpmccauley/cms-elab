@@ -95,8 +95,10 @@ var ElabRouter = Backbone.Router.extend({
 		datasets.get(name).set('selected', true);
 		datasets.get(name).get('parameters').deselectAll();
 
-		parameterImageView.collection = datasets.get(name).get('parameters');
-		parameterImageView.render();
+		parameterPageView.render();
+
+		parameterSelectView.collection = datasets.get(name).get('parameters');
+		parameterSelectView.render();
 
 		parameterTableView.collection = datasets.get(name).get('parameters');
 		parameterTableView.render();
@@ -115,6 +117,9 @@ var ElabRouter = Backbone.Router.extend({
 				.getSelected()
 				.forEach(function(p) {
 					var name = p.get('name');
+
+					console.log(name);
+
 					var histogram = that.buildHistogram(that.elabState.rawData.map(function(d) {return d[name];}));
 					var plot = new Plot({data: [histogram], title: name});
 					plots.add(plot);

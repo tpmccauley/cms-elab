@@ -121,15 +121,17 @@ datasets.add(wenu_dataset);
 datasets.add(wmunu_dataset);
 datasets.add(dimuon_dataset);
 
+var datasetPageView = new DatasetPageView();
+datasetPageView.render();
+
 var datasetListView = new DatasetListView({collection:datasets});
 var datasetImageView = new DatasetImageView({collection:datasets});
-
 datasetListView.render();
 datasetImageView.render();
 
+var parameterPageView = new ParameterPageView();
+var parameterSelectView = new ParameterSelectView();
 var parameterTableView = new ParameterTableView();
-//var parameterDropdownView = new ParameterDropdownView();
-var parameterImageView = new ParameterImageView();
 
 var plotPageView = new PlotPageView();
 

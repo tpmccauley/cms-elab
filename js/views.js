@@ -1,5 +1,15 @@
-var DatasetListView = Backbone.View.extend({
+var DatasetPageView = Backbone.View.extend({
 	el: "#datasets",
+
+	template: _.template($('#dataset-page').html()),
+
+	render: function() {
+		$(this.el).append(this.template());
+	}
+});
+
+var DatasetListView = Backbone.View.extend({
+	el: "#dataset-views",
 
 	initialize: function() {
 		this.collection = this.options.collection;
@@ -13,7 +23,7 @@ var DatasetListView = Backbone.View.extend({
 });
 
 var DatasetImageView = Backbone.View.extend({
-	el: "#datasets",
+	el: "#dataset-views",
 
 	initialize: function() {
 		this.collection = this.options.collection;
@@ -22,7 +32,7 @@ var DatasetImageView = Backbone.View.extend({
 	template: _.template($("#dataset-images").html()),
 
 	render: function() {
-		$(this.el).html(this.template({datasets: this.collection.toJSON()}));
+		$(this.el).append(this.template({datasets: this.collection.toJSON()}));
 		this.renderPopover();
 	},
 
@@ -41,35 +51,31 @@ var DatasetImageView = Backbone.View.extend({
 	}
 });
 
-var ParameterImageView = Backbone.View.extend({
-	el: "#parameter-images",
+var ParameterPageView = Backbone.View.extend({
+	el: "#parameters",
+
+	template: _.template($('#parameter-page').html()),
+
+	render: function() {
+		$(this.el).html(this.template());
+	}
+});
+
+var ParameterSelectView = Backbone.View.extend({
+	el: '#parameter-buttons',
 
 	initialize: function() {
 		this.collection = this.options.collection;
 	},
 
-	template: _.template($("#parameter-images-template").html()),
+	template: _.template($('#parameter-buttons-template').html()),
 
 	render: function() {
-		$(this.el).html(this.template({parameters: this.collection.toJSON()}));
-		this.renderPopover();
-	},
-
-	renderPopover: function() {
-		this.collection.forEach(function(p) {
-
-			var options = {
-				trigger: "hover",
-				title:	function() {return p.get("name");},
-				content: function() {return p.get("description");},
-				placement: "bottom"		
-			};
-
-			$("img."+p.get("name")).popover(options);
-		});
+		// why doesn't this work?
+		//$(this.el).append(this.template({parameters: this.collection.toJSON()}));
+		$('#parameter-buttons').append(this.template({parameters: this.collection.toJSON()}));
 	}
 });
-
 
 var ParameterRowView = Backbone.View.extend({
 	el: "tr",
@@ -79,20 +85,11 @@ var ParameterRowView = Backbone.View.extend({
 	},
 
 	template: _.template($('#parameter-row-template').html())
-
-	/*
-	events: {
-		"switch-change .parameter-row": "parameterSelected"
-	},
-
-	parameterSelected: function() {
-		console.log(this.model.get('name'), this.model.get('selected'));
-	}
-	*/
 });
 
+
 var ParameterTableView = Backbone.View.extend({
-	el: "#table",
+	el: "#parameter-information",
 
 	initialize: function() {
 		this.collection = this.options.collection;
@@ -103,7 +100,9 @@ var ParameterTableView = Backbone.View.extend({
 	render: function() {
 		//$(this.el).append(this.template({parameters: this.collection.toJSON()}));
 
-		$(this.el).html(this.template());
+		// something weird about the DOM and rendering
+		//$(this.el).html(this.template());
+		$('#parameter-information').html(this.template());
 		
 		this.collection.each(function(p) {
 			pv = new ParameterRowView();
@@ -113,34 +112,22 @@ var ParameterTableView = Backbone.View.extend({
 	}
 });
 
-var ParameterItemView = Backbone.View.extend({
-	el: "li",
-
-	initialize: function() {
-		this.model = this.options.model;
-	},
-
-	template: _.template($('#parameter-li-template').html())
-});
-
-var ParameterDropdownView = Backbone.View.extend({
-	el: "#dropdown",
+var PlotPageView = Backbone.View.extend({
+	el: "#plots-views",
 
 	initialize: function() {
 		this.collection = this.options.collection;
 	},
 
-	template: _.template($('#parameters-dropdown-template').html()),
+	template: _.template($("#plot-page-template").html()),
 
 	render: function() {
 		$(this.el).html(this.template());
 
-		console.log(this.template())
-;
 		this.collection.each(function(p) {
-			pv = new ParameterItemView();
+			pv = new PlotView();
 			pv.model = p;
-			$("ul#parameter-ul").append(pv.template({parameter:p.toJSON()}));
+			pv.render();		
 		});
 	}
 });
@@ -164,25 +151,6 @@ var PlotView = Backbone.View.extend({
 	}
 });
 
-var PlotPageView = Backbone.View.extend({
-	el: "#plots",
-
-	initialize: function() {
-		this.collection = this.options.collection;
-	},
-
-	template: _.template($("#plot-page-template").html()),
-
-	render: function() {
-		$(this.el).html(this.template());
-
-		this.collection.each(function(p) {
-			pv = new PlotView();
-			pv.model = p;
-			pv.render();		
-		});
-	}
-});
 
 
 
