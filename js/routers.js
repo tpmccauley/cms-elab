@@ -127,8 +127,11 @@ var ElabRouter = Backbone.Router.extend({
 
 		console.log("Number of plots: " + plots.length);
 
-		plotPageView.collection = plots;
 		plotPageView.render();
+
+		var plotFlotView = new PlotFlotView();
+		plotFlotView.collection = plots;
+		plotFlotView.render();
 
 		$("#datasets").hide();
 		$("#parameters").hide();

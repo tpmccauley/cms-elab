@@ -113,43 +113,34 @@ var ParameterTableView = Backbone.View.extend({
 });
 
 var PlotPageView = Backbone.View.extend({
-	el: "#plots-views",
-
-	initialize: function() {
-		this.collection = this.options.collection;
-	},
+	el: "#plots",
 
 	template: _.template($("#plot-page-template").html()),
 
 	render: function() {
 		$(this.el).html(this.template());
+	}
+});
 
+var PlotFlotView = Backbone.View.extend({
+	el: "#flot-view",
+
+	initialize: function() {
+		this.collection = this.options.collection;
+	},
+
+	template: _.template($('#flot-template').html()),
+
+	render: function() {
+		var that = this;
 		this.collection.each(function(p) {
-			pv = new PlotView();
-			pv.model = p;
-			pv.render();		
+			$(that.el).append(that.template({plot: p.toJSON()}));
+			$.plot(("#"+p.get('title')+" .placeholder"), p.get('data'), p.get('options'));
+			$('#'+p.get('title')+' .title').html(p.get('title'));
 		});
 	}
 });
 
-var PlotView = Backbone.View.extend({
-	el: "#plots",
-
-	intialize: function() {
-		this.model = this.options.model;
-	},
-
-	template : _.template($("#plot-template").html()),
-
-	render: function() {
-
-		console.log(this.model.toJSON());
-
-		$(this.el).append(this.template({plot: this.model.toJSON()}));
-		$.plot($("#"+this.model.get('title')+" .placeholder"), this.model.get('data'), this.model.get('options'));
-		$('#'+this.model.get('title')+' .title').html(this.model.get('title'));
-	}
-});
 
 
 

@@ -238,58 +238,69 @@
       </ul>
 
       <ul class="nav nav-tabs">
-      <li class="active"><a data-target="#plot-views" data-toggle="tab">Plots</a></li>
-      <li><a data-target="#plot-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
+      <li><a data-target="#crossfilter-view" data-toggle="tab">Crossfilter plots</a></li>
+      <li><a data-target="#flot-view" data-toggle="tab">Flot plots</a></li>
+      <li class="active"><a data-target="#plot-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
       </ul>
 
       <div class="tab-content">
-      <div class="container tab-pane" id="plot-views"></div>
-      <div class="container tab-pane" id="plot-information"></div>
+      <div class="container tab-pane" id="crossfilter-view"></div>
+      <div class="container tab-pane" id="flot-view"></div>
+      <div class="container tab-pane" id="plot-information">
+        <h3>Placeholder information</h3>
+        <ul>
+        <li><a href="http://d3js.org/">d3</a></li>
+        <li><a href="http://square.github.com/crossfilter/">Crossfilter</a></li>
+        <li><a href="https://github.com/flot/flot.github.com">Flot</a></li>
+        </ul>
+      </div>
       </div>
     </script>
 
-    <script type="text/template" id="plot-template">
-      <div id="<%= plot.title %>">  
-      <div class="plot">
+    <script type="text/template" id="flot-template">
+       
+        <div id="<%= plot.title %>">  
+        <div class="plot">
 
-      <div class="plot-controls">
-      <table>
-      <tr>
+        <div class="plot-controls">
+        <table>
+        <tr>
 
-      <td>
-      <form class="navbar-form pull-left">
-      Y Max:
-      <input type="text" class="span1">
-      <button type="button" id="ymax" class="btn">Set</button>
-      </form>
-      </td>
+        <td>
+        <form class="navbar-form pull-left">
+        Y Max:
+        <input type="text" class="span1">
+        <button type="button" id="ymax" class="btn">Set</button>
+        </form>
+        </td>
 
-      <td><span class="span1"></td>
+        <td><span class="span1"></td>
 
-      <td>
-      <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
-      <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
-      </td>
+        <td>
+        <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
+        <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
+        </td>
 
-      <td><span class="span1"></td>
+        <td><span class="span1"></td>
 
-      <td>
-      <form class="navbar-form pull-left">
-      Bin Width:
-      <input type="text" class="span1">
-      <button type="submit" id="binwidth" class="btn">Set</button>
-      </form>
-      </td>
+        <td>
+        <form class="navbar-form pull-left">
+        Bin Width:
+        <input type="text" class="span1">
+        <button type="submit" id="binwidth" class="btn">Set</button>
+        </form>
+        </td>
 
-      </tr>
-      </table>
-      </div>
+        </tr>
+        </table>
+        </div>
 
-      <div class="title"></div>
-      <div class="placeholder"></div>
+        <div class="title"></div>
+        <div class="placeholder"></div>
     
-      </div>
-      </div>
+        </div>
+        </div>
+      
     </script>
 
     </div> <!-- End of plots div -->
