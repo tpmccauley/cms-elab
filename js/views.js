@@ -122,7 +122,7 @@ var PlotPageView = Backbone.View.extend({
 	}
 });
 
-var PlotFlotView = Backbone.View.extend({
+var FlotView = Backbone.View.extend({
 	el: "#flot-view",
 
 	initialize: function() {
@@ -141,6 +141,20 @@ var PlotFlotView = Backbone.View.extend({
 	}
 });
 
+var CrossfilterView = Backbone.View.extend({
+	el: "#crossfilter-view",
+
+	initialize: function() {
+		this.collection = this.options.collection;
+	},
+
+	template: _.template($('#crossfilter-template').html()),
+
+	render: function() {
+		console.log(this.template({parameters: this.collection.toJSON()}));
+		$(this.el).html(this.template({parameters: this.collection.toJSON()}));
+	} 
+});
 
 
 

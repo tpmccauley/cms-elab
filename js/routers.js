@@ -129,9 +129,13 @@ var ElabRouter = Backbone.Router.extend({
 
 		plotPageView.render();
 
-		var plotFlotView = new PlotFlotView();
-		plotFlotView.collection = plots;
-		plotFlotView.render();
+		var flotView = new FlotView();
+		flotView.collection = plots;
+		flotView.render();
+
+		var crossfilterView = new CrossfilterView();
+		crossfilterView.collection = datasets.get(this.elabState.dataset).get('parameters').getSelected();
+		crossfilterView.render();
 
 		$("#datasets").hide();
 		$("#parameters").hide();

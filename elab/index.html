@@ -79,6 +79,16 @@
         border: 1px dashed #cccccc; 
       }
 
+      #charts {
+        padding: 10px 0;
+      }
+
+      .chart {
+        display: inline-block;
+        height: 151px;
+        margin-bottom: 20px;
+      }
+
     </style>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -247,7 +257,6 @@
       <div class="container tab-pane" id="crossfilter-view"></div>
       <div class="container tab-pane" id="flot-view"></div>
       <div class="container tab-pane" id="plot-information">
-        <h3>Placeholder information</h3>
         <ul>
         <li><a href="http://d3js.org/">d3</a></li>
         <li><a href="http://square.github.com/crossfilter/">Crossfilter</a></li>
@@ -258,49 +267,57 @@
     </script>
 
     <script type="text/template" id="flot-template">
-       
-        <div id="<%= plot.title %>">  
-        <div class="plot">
+      <div id="<%= plot.title %>">  
+      <div class="plot">
 
-        <div class="plot-controls">
-        <table>
-        <tr>
+      <div class="plot-controls">
+      <table>
+      <tr>
 
-        <td>
-        <form class="navbar-form pull-left">
-        Y Max:
-        <input type="text" class="span1">
-        <button type="button" id="ymax" class="btn">Set</button>
-        </form>
-        </td>
+      <td>
+      <form class="navbar-form pull-left">
+      Y Max:
+      <input type="text" class="span1">
+      <button type="button" id="ymax" class="btn">Set</button>
+      </form>
+      </td>
 
-        <td><span class="span1"></td>
+      <td><span class="span1"></td>
 
-        <td>
-        <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
-        <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
-        </td>
+      <td>
+      <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
+      <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
+      </td>
 
-        <td><span class="span1"></td>
+      <td><span class="span1"></td>
 
-        <td>
-        <form class="navbar-form pull-left">
-        Bin Width:
-        <input type="text" class="span1">
-        <button type="submit" id="binwidth" class="btn">Set</button>
-        </form>
-        </td>
+      <td>
+      <form class="navbar-form pull-left">
+      Bin Width:
+      <input type="text" class="span1">
+      <button type="submit" id="binwidth" class="btn">Set</button>
+      </form>
+      </td>
 
-        </tr>
-        </table>
-        </div>
+      </tr>
+      </table>
+      </div>
 
-        <div class="title"></div>
-        <div class="placeholder"></div>
+      <div class="title"></div>
+      <div class="placeholder"></div>
     
-        </div>
-        </div>
-      
+      </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="crossfilter-template">
+      <div id="charts">
+      <% _.each(parameters, function(parameter) { %>
+      <div class="chart">
+      <div class="title"><%= parameter.name %> [<%= parameter.unit %>]</div>
+      </div>
+      <% }); %>
+      </div>
     </script>
 
     </div> <!-- End of plots div -->
@@ -308,7 +325,6 @@
     </div> <!-- End of full container -->
 
     <script src="../assets/js/jquery.js"></script>
-    <script src="../js/bootstrapSwitch.js"></script>
 
     <script src="../assets/js/bootstrap-transition.js"></script>
     <script src="../assets/js/bootstrap-alert.js"></script>
@@ -326,6 +342,8 @@
     <script src="../js/underscore-min.js"></script>
     <script src="../js/backbone-min.js"></script>
     <script src="../js/jquery.flot.js"></script>
+    <script src="../js/crossfilter.v1.min.js"></script>
+    <script src="../js/d3.v2.min.js"></script>
 
     <script src="../js/models.js"></script>
     <script src="../js/views.js"></script>

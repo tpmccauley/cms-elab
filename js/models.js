@@ -9,16 +9,6 @@ var Dataset = Backbone.Model.extend({
 		selected: false
 	},
 
-	/*
-	initialize: function() {
-        this.bind('change:selected', this.datasetSelected);
-    },
-
-	datasetSelected: function() {
-		console.log(this.get('name'), this.get('selected'));
-	},
-	*/
-
 	idAttribute: "id"
 });
 
@@ -40,16 +30,6 @@ var Parameter = Backbone.Model.extend({
 		description: "I am a parameter",
 		selected: false
 	},
-
-	/*
-	initialize: function() {
-		this.bind('change:selected', this.parameterSelected);
-	},
-
-	parameterSelected: function() {
-		console.log(this.get('name'), this.get('selected'));
-	},
-	*/
 
 	idAttribute: "id"
 });
@@ -124,3 +104,9 @@ var Plot = Backbone.Model.extend({
 var Plots = Backbone.Collection.extend({
 	model: Plot
 });
+
+
+
+
+
+
