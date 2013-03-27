@@ -126,7 +126,11 @@ aside {
 
 <p><div class="container" id="dropdown"></div></p>
 <p><div class="container" id="name"></div></p>
-<p><div class="container" id="buttons"></div></p>
+<p>
+  <div class="container" id="buttons">
+    <table><tr id="button-table"></tr></table>
+  </div>
+</p>
 
 <script type="text/template" id="dataset-dropdown-template">
   <div class="btn-group">
@@ -202,6 +206,7 @@ aside {
 <script src="../js/d3.v2.min.js"></script>
 
 <script src="crossfilter.js"></script>
+<script src="setup.js"></script>
 
 <script type="text/javascript">
 
