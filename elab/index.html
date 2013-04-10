@@ -10,94 +10,8 @@
     <link href="../assets/css/bootstrap.css" rel="stylesheet">
     <link href="../assets/css/bootstrapSwitch.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
-
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-
-      .placeholder {
-        width: 758px; 
-        height: 380px; 
-        margin-bottom: 26px; 
-        margin-left: 26px; 
-        padding: 0px; 
-        position: center;
-        border: 1px;
-      }
-
-      .plot-controls {
-        position: center;
-      }
-
-      .title {
-        width: 758px; 
-        height: 16px;
-        padding-left: 48px;
-      }
-
-      .xlabel {
-        position: absolute; 
-        left: 400px; 
-        bottom: -24px;
-      }
-
-      .ylabel {
-        position: absolute; 
-        left: -50px; 
-        top: 200px;
-        writing-mode: tb-rl; 
-        filter: flipV flipH; 
-        -webkit-transform: rotate(-90deg); 
-        -moz-transform: rotate(-90deg);
-      }
-
-      .switch span.switch-primary, .switch span.switch-left {
-        background: -moz-linear-gradient(bottom , #6D84A2, #A8B6CA);
-        background-image: -webkit-linear-gradient(bottom , #6D84A2, #A8B6CA);
-        color: white;
-      }
-
-      .btn.active {
-        background-color: #A8B6CA;
-      }
-
-      .mini-layout {
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        border-radius: 6px 6px 6px 6px;
-        height: 300px;
-        background-color: #f5f5f5;
-        width: 100%;
-      } 
-
-      img:hover {
-        border: 3px solid #f5dcc5;
-      } 
-
-      .plot {
-        border: 1px dashed #cccccc; 
-      }
-
-      #charts {
-        padding: 10px 0;
-      }
-
-      .chart {
-        display: inline-block;
-        height: 151px;
-        margin-bottom: 20px;
-      }
-
-    </style>
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!--<link rel="shortcut icon" href="./assets/ico/favicon.ico">-->
+    <link rel="stylesheet" href="../css/elab.css"/>
+    
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
@@ -118,7 +32,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="../index.html"><i class="icon-home icon-white"></i> CMS e-Lab Home</a></li>
-              <li class="active"><a href="#"><i class="icon-road icon-white"></i> Explore</a></li>
+              <li class="active"><a href="#datasets-page"><i class="icon-road icon-white"></i> Explore</a></li>
             </ul>
           </div>
 
@@ -127,16 +41,12 @@
     </div>   
 
     <div class="container" id="main">
-    <!-- This is where all the content goes.
-         We have three (for now) containers:
-         - datasets
-         - parameters
-         - plots
-    -->
-
-    <div class="container" id="datasets">
-
-    <script type="text/template" id="dataset-page">
+    
+    <div class="container" id="datasets"></div>
+    <div class="container" id="parameters"></div>
+    <div class="container" id="plots"></div>
+    
+    <script type="text/template" id="dataset-page-template">
       <ul class="breadcrumb">
       <li class="active">Select dataset</li>
       </ul>
@@ -147,7 +57,10 @@
       </ul>
 
       <div class="tab-content">
-      <div class="container tab-pane" id="dataset-views"></div>
+      <div class="container tab-pane" id="dataset-views">
+        <div class="container" id="dataset-list-view"></div>
+        <div class="container" id="dataset-image-view"></div>
+       </div>
       <div class="container tab-pane" id="dataset-information">
       <ul>
       <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S003&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">electron</a></li>
@@ -161,61 +74,54 @@
       </div>
     </script>
 
-    <script type="text/template" id="dataset-list">
+    <script type="text/template" id="dataset-list-template">
       <h3>The following datasets are available:</h3>
-      <ul class="datasets">
+      <ul>
       <% _.each(datasets, function(dataset) { %>
         <li><%= dataset.description %></li>
       <% }); %>
       </ul>
     </script>
 
-    <script type="text/template" id="dataset-images">
-      <h3>Click on a diagram below to access the data:</h3>
+    <script type="text/template" id="dataset-image-template">
+      <h3>Click on a diagram to select a dataset:</h3>
       <% _.each(datasets, function(dataset) { %>
-        <a class='dataset-image' href='#/parameters/<%= dataset.name %>' >
-        <img rel='popover' src=<%= dataset.image %> class='<%= dataset.type %> img-rounded img-polaroid'></img>
+        <a class='dataset-image' href="#parameters-page/<%= dataset.name %>" id=<%= dataset.name %>>
+        <img rel='popover' src=<%= dataset.image %> img-rounded img-polaroid></img>
         </a>
       <% }); %>
     </script>
     
-    </div>
-    
-    <div class="container" id="parameters">
-
-    <script type="text/template" id="parameter-page">
+    <script type="text/template" id="parameter-page-template">
       <ul class="breadcrumb">
-      <li class="active">Select dataset<span class="divider">/</span></li>
+      <li><a href="#datasets-page">Select dataset</a><span class="divider">/</span></li>
       <li class="active">Select parameter</li>
       </ul>
       
       <ul class="nav nav-tabs">
-      <li class="active"><a data-target="#parameter-buttons" data-toggle="tab">Parameters</a></li>
+      <li class="active"><a data-target="#parameter-views" data-toggle="tab">Parameters</a></li>
       <li><a data-target="#parameter-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
       </ul>
 
       <div class="tab-content">
-      <div class="container tab-pane" id="parameter-buttons"></div>
+      <div class="container tab-pane" id="parameter-views">
+        <h3>Select one or more parameters:</h3>
+        <table><tr id="parameter-button-row"></tr></table>
+        <p>
+        <div class="row-fluid">
+        <div class="span2">         
+        <a href="#plots-page" class="btn btn-block">Plot parameter(s) <i class="icon-chevron-right"></i></a>
+        </div>
+        </div>
+        </p>
+      </div>
       <div class="container tab-pane" id="parameter-information"></div>
-      </div>
     </script>
 
-    <script type="text/template" id="parameter-buttons-template">
-      <h3>Select one or more parameters:</h3>
-
-      <% _.each(parameters, function(parameter) { %>
+    <script type="text/template" id="parameter-button-template">
       <button type='button' data-toggle='button' id=<%= parameter.name %> class='btn btn-large parameter-select'><%= parameter.name %></button>
-      <% }); %>
-         
-      <p>
-      <div class="row-fluid">
-      <div class="span2">         
-      <a href="#/plots/" class="btn btn-block">Plot parameter(s) <i class="icon-chevron-right"></i></a>
-      </div>
-      </div>
-      </p>
     </script>
-      
+  
     <script type="text/template" id="parameters-table-template">
       <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
       <thead>
@@ -236,30 +142,23 @@
       <td><%= parameter.description %></td>
       </tr>
     </script>
-    </div> 
-
-    <div class="container" id="plots">
 
     <script type="text/template" id="plot-page-template">
       <ul class="breadcrumb">
-      <li class="active">Select dataset  <span class="divider">/</span></li>
-      <li class="active">Select parameter<span class="divider">/</span></li>
+      <li><a href="#datasets-page">Select dataset</a><span class="divider">/</span></li>
+      <li><a href="#parameters-page">Select parameter</a><span class="divider">/</span></li>
       <li class="active">Plot parameter</li>
       </ul>
 
       <ul class="nav nav-tabs">
-      <li><a data-target="#crossfilter-view" data-toggle="tab">Crossfilter plots</a></li>
       <li><a data-target="#flot-view" data-toggle="tab">Flot plots</a></li>
       <li class="active"><a data-target="#plot-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
       </ul>
 
       <div class="tab-content">
-      <div class="container tab-pane" id="crossfilter-view"></div>
       <div class="container tab-pane" id="flot-view"></div>
       <div class="container tab-pane" id="plot-information">
         <ul>
-        <li><a href="http://d3js.org/">d3</a></li>
-        <li><a href="http://square.github.com/crossfilter/">Crossfilter</a></li>
         <li><a href="https://github.com/flot/flot.github.com">Flot</a></li>
         </ul>
       </div>
@@ -310,18 +209,6 @@
       </div>
     </script>
 
-    <script type="text/template" id="crossfilter-template">
-      <div id="charts">
-      <% _.each(parameters, function(parameter) { %>
-      <div class="chart">
-      <div class="title"><%= parameter.name %> [<%= parameter.unit %>]</div>
-      </div>
-      <% }); %>
-      </div>
-    </script>
-
-    </div> <!-- End of plots div -->
-
     </div> <!-- End of full container -->
 
     <script src="../assets/js/jquery.js"></script>
@@ -342,25 +229,7 @@
     <script src="../js/underscore-min.js"></script>
     <script src="../js/backbone-min.js"></script>
     <script src="../js/jquery.flot.js"></script>
-    <script src="../js/crossfilter.v1.min.js"></script>
-    <script src="../js/d3.v2.min.js"></script>
 
-    <script src="../js/models.js"></script>
-    <script src="../js/views.js"></script>
-    <script src="../js/routers.js"></script>
-    <script src="../js/elab.js"></script>
-   
-    <script type="text/javascript">
-        $(".parameter-select").click(function() {
-          var pid = $(this).attr('id');
-          var selected = ! $(this).hasClass('active');
-
-          console.log(pid, selected);
-
-          var dataset = datasets.getSelected().at(0);
-          dataset.get('parameters').get(pid).set('selected', selected);
-        });
-    </script>
-
+    <script src="elab.js"></script>
   </body>
 </html>
