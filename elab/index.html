@@ -62,13 +62,14 @@
         <div class="container" id="dataset-image-view"></div>
        </div>
       <div class="container tab-pane" id="dataset-information">
+      <h3>Find out more about the particles at the Particle Data Group:</h3>
       <ul>
-      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S003&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">electron</a></li>
-      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S004&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">muon</a></li>
-      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=M070&exp=Y&inscript=Y&sub=Yr&return=MXXX025">J/&#0968</a></li>
-      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S044&exp=Y">Z</a></li>
-      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S043&exp=Y">W</a></li>
-      <li><a href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S066&exp=Y">neutrinos</a></li>
+      <li><a target="_blank" href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S003&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">electron</a></li>
+      <li><a target="_blank" href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S004&exp=Y&inscript=Y&sub=Yr&return=S003,S004,S035">muon</a></li>
+      <li><a target="_blank" href="http://pdglive.lbl.gov/Rsummary.brl?nodein=M070&exp=Y&inscript=Y&sub=Yr&return=MXXX025">J/&#0968</a></li>
+      <li><a target="_blank" href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S044&exp=Y">Z</a></li>
+      <li><a target="_blank" href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S043&exp=Y">W</a></li>
+      <li><a target="_blank" href="http://pdglive.lbl.gov/Rsummary.brl?nodein=S066&exp=Y">neutrinos</a></li>
       </ul>
       </div>
       </div>
@@ -94,7 +95,7 @@
     
     <script type="text/template" id="parameter-page-template">
       <ul class="breadcrumb">
-      <li><a href="#datasets-page">Select dataset</a><span class="divider">/</span></li>
+      <li class="active">Select dataset</a><span class="divider">/</span></li>
       <li class="active">Select parameter</li>
       </ul>
       
@@ -123,7 +124,7 @@
     </script>
   
     <script type="text/template" id="parameters-table-template">
-      <table rel="popover" id="parameter-table" class="table table-bordered table-striped">
+      <table id="parameter-table" class="table table-bordered table-striped">
       <thead>
       <tr>
       <th>Name</th>
@@ -131,22 +132,22 @@
       <th>Description</th>
       </tr>
       </thead>
-      <tbody id="parameter-body"></tbody>
+      <tbody id="parameter-body">
+      <% _.each(parameters, function(parameter) { %>
+        <tr>
+        <td><%= parameter.name %></td>
+        <td><%= parameter.unit %></td>
+        <td><%= parameter.description %></td>
+        </tr>
+      <% }); %>
+      </tbody>
       </table>
-    </script>
-
-    <script type="text/template" id="parameter-row-template">
-      <tr>
-      <td><%= parameter.name %></td>
-      <td><%= parameter.unit %></td>
-      <td><%= parameter.description %></td>
-      </tr>
     </script>
 
     <script type="text/template" id="plot-page-template">
       <ul class="breadcrumb">
-      <li><a href="#datasets-page">Select dataset</a><span class="divider">/</span></li>
-      <li><a href="#parameters-page">Select parameter</a><span class="divider">/</span></li>
+      <li class="active">Select dataset</a><span class="divider">/</span></li>
+      <li class="active">Select parameter</a><span class="divider">/</span></li>
       <li class="active">Plot parameter</li>
       </ul>
 
@@ -166,8 +167,7 @@
     </script>
 
     <script type="text/template" id="flot-template">
-      <div id="<%= plot.title %>">  
-      <div class="plot">
+      <div id="<%= plot.title %>" class="plot">
 
       <div class="plot-controls">
       <table>
@@ -177,15 +177,15 @@
       <form class="navbar-form pull-left">
       Y Max:
       <input type="text" class="span1">
-      <button type="button" id="ymax" class="btn">Set</button>
+      <button type="button" class="btn ymax">Set</button>
       </form>
       </td>
 
       <td><span class="span1"></td>
 
       <td>
-      <button type="button" class="btn" id="logx" data-toggle="button">Log X</button>
-      <button type="button" class="btn" id="logy" data-toggle="button">Log Y</button>
+      <button type="button" class="btn logx" data-toggle="button">Log X</button>
+      <button type="button" class="btn logy" data-toggle="button">Log Y</button>
       </td>
 
       <td><span class="span1"></td>
@@ -194,7 +194,7 @@
       <form class="navbar-form pull-left">
       Bin Width:
       <input type="text" class="span1">
-      <button type="submit" id="binwidth" class="btn">Set</button>
+      <button type="submit" class="btn binwidth">Set</button>
       </form>
       </td>
 
@@ -205,7 +205,6 @@
       <div class="title"></div>
       <div class="placeholder"></div>
     
-      </div>
       </div>
     </script>
 
@@ -229,6 +228,7 @@
     <script src="../js/underscore-min.js"></script>
     <script src="../js/backbone-min.js"></script>
     <script src="../js/jquery.flot.js"></script>
+    <script src="../js/jquery.flot.selection.js"></script>
 
     <script src="elab.js"></script>
   </body>

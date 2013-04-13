@@ -294,10 +294,6 @@ Elab.PlotPageView = Backbone.View.extend({
 	}
 });
 
-Elab.dataset_page_view = new Elab.DatasetPageView();
-Elab.parameter_page_view = new Elab.ParameterPageView();
-Elab.plot_page_view = new Elab.PlotPageView();
-
 Elab.emptyAll = function() {
     $('#datasets').empty();
     $('#parameters').empty();
@@ -335,9 +331,6 @@ Elab.DatasetImageView = Backbone.View.extend({
     }
 });
 
-Elab.dataset_list_view = new Elab.DatasetListView();
-Elab.dataset_image_view = new Elab.DatasetImageView();
-
 Elab.ParameterButtonView = Backbone.View.extend({
     tagName: 'td',
 
@@ -346,7 +339,7 @@ Elab.ParameterButtonView = Backbone.View.extend({
     },
 
     events: {
-        'click':'clickedButton'
+        'click': 'clickedButton'
     },
 
     clickedButton: function() {
@@ -375,21 +368,32 @@ Elab.ParameterButtonsView = Backbone.View.extend({
     }
 });
 
-Elab.parameter_buttons_view = new Elab.ParameterButtonsView();
-
-Elab.FlotView = Backbone.View.extend({   
-    template: _.template($('#flot-template').html()),
+Elab.ParameterTableView = Backbone.View.extend({
+    template: _.template($('#parameters-table-template').html()),
 
     render: function() {
-        this.collection.each(function(p) {
-            $("#flot-view").append(this.template({plot: p.toJSON()}));
-            $.plot(("#"+p.get('title')+" .placeholder"), p.get('data'), p.get('options'));
-            $('#'+p.get('title')+' .title').html(p.get('title'));
-        }, this);
+        $("#parameter-information").append(this.template({parameters: this.collection.toJSON()}));
     }
 });
 
-Elab.plot_flot_view = new Elab.FlotView();
+Elab.FlotView = Backbone.View.extend({
+    template: _.template($('#flot-template').html()),
+
+    render: function() {
+        $("#flot-view").append(this.template({plot: this.model.toJSON()}));
+        $.plot(("#"+this.model.get('title')+" .placeholder"), this.model.get('data'), this.model.get('options'));
+        $('#'+this.model.get('title')+' .title').html(this.model.get('title'));
+    }
+});
+
+Elab.FlotPlotsView = Backbone.View.extend({
+    render: function() {
+        this.collection.each(function(p) {
+            pv = new Elab.FlotView({model:p});
+            pv.render();
+        }, this);  
+    }
+});
 
 Elab.Router = Backbone.Router.extend({
 	routes: {
@@ -403,11 +407,7 @@ Elab.Router = Backbone.Router.extend({
   
         Elab.emptyAll();   
         Elab.dataset_page_view.render();
-
-        Elab.dataset_list_view.collection = Elab.datasets;
         Elab.dataset_list_view.render();
-
-        Elab.dataset_image_view.collection = Elab.datasets;
         Elab.dataset_image_view.render();
 	},
 
@@ -421,14 +421,21 @@ Elab.Router = Backbone.Router.extend({
         Elab.parameter_page_view.render();
 
         Elab.datasets.get(name).get('parameters').deselectAll();
+        console.log(Elab.datasets.get(name).get('parameters').getSelected().length, ' parameters selected');
+
         Elab.parameter_buttons_view.collection = Elab.datasets.get(name).get('parameters');
         Elab.parameter_buttons_view.render();
+
+        Elab.parameter_table_view.collection = Elab.datasets.get(name).get('parameters');
+        Elab.parameter_table_view.render();
 	},
 	
     showPlots: function() {
 		console.log("showPlots");
 
         this.getData(Elab.datasets.get(Elab.selected_dataset).get('url'));
+
+        Elab.plots.reset();
 
         Elab.datasets
             .get(Elab.selected_dataset)
@@ -438,17 +445,16 @@ Elab.Router = Backbone.Router.extend({
 
                 var name = p.get('name');
                 var histogram = this.buildHistogram(Elab.raw_data.map(function(d) {return d[name];}));
-                console.log(histogram);
-
                 var plot = new Elab.Plot({data: [histogram], title: name});
+
                 Elab.plots.add(plot);
             }, this);
 
         Elab.emptyAll();
         Elab.plot_page_view.render();
 
-        Elab.plot_flot_view.collection = Elab.plots;
-        Elab.plot_flot_view.render();
+        Elab.flot_plots_view.collection = Elab.plots;
+        Elab.flot_plots_view.render();
 	},
 
     getData: function(data_url) {
@@ -521,6 +527,25 @@ Elab.Router = Backbone.Router.extend({
     },
 });
 
-Elab.router = new Elab.Router();
-Backbone.history.start();
+$(function() {
+
+    Elab.dataset_page_view = new Elab.DatasetPageView();
+    Elab.parameter_page_view = new Elab.ParameterPageView();
+    Elab.plot_page_view = new Elab.PlotPageView();
+
+    Elab.dataset_list_view = new Elab.DatasetListView();
+    Elab.dataset_image_view = new Elab.DatasetImageView();
+
+    Elab.dataset_list_view.collection = Elab.datasets;
+    Elab.dataset_image_view.collection = Elab.datasets;
+
+    Elab.parameter_buttons_view = new Elab.ParameterButtonsView();
+    Elab.parameter_table_view = new Elab.ParameterTableView();
+
+    Elab.flot_plots_view = new Elab.FlotPlotsView();
+
+    Elab.router = new Elab.Router();
+    Backbone.history.start();
+});
+
 
