@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Adapted from crossfilter example -->
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+<link href="../css/crossfilter.css" rel="stylesheet">
+
+<div id="body">
+
+<p>
+<div class="container" id="dropdown">
+<div class="btn-group">
+  <a class="btn">Select a dataset</a>
+  <a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+  <ul class="dropdown-menu" id="dataset-ul">
+  <li id='Wenu'><a href='#Wenu'> 500 events of W to e&#0957 </a></li>
+  <li id='Wmunu'><a href='#Wmunu'> 500 events of W to &#0956&#0957 </a></li>
+  </ul>
+</div>
+</div>
+</p>
+<p><div class="container" id="name"></div></p>
+<!--
+<p>
+  <div class="container" id="buttons">
+    <table><tr id="button-table"></tr></table>
+  </div>
+</p>
+-->
+<p><div class="container" id="parameter-information"></div></p>
+
+<script type="text/template" id="dataset-dropdown-template">
+  <div class="btn-group">
+  <a class="btn">Select a dataset</a>
+  <a class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+  <ul class="dropdown-menu" id="dataset-ul"></ul>
+  </div>
+</script>
+    
+<script type="text/template" id="dataset-li-template">
+  <li id='<%= dataset.name %>'><a href="#<%= dataset.name %>">  <%= dataset.name %> </a></li>
+</script>
+
+<script type="text/template" id="parameter-button-template">
+  <button type='button' data-toggle='button' id=<%= parameter.name %> class='btn btn-large parameter-select'><%= parameter.name %></button>
+</script>
+
+<script type="text/template" id="parameter-buttons-template">
+  <% _.each(parameters, function(parameter) { %>
+    <button type='button' data-toggle='button' id=<%= parameter.name %> class='btn btn-large parameter-select'><%= parameter.name %></button>
+  <% }); %>
+</script>
+
+<script type="text/template" id="parameters-table-template">
+      <table id="parameter-table" class="table table-bordered table-striped">
+      <thead>
+      <tr>
+      <th>Name</th>
+      <th>Unit</th>
+      <th>Description</th>
+      </tr>
+      </thead>
+      <tbody id="parameter-body">
+      <% _.each(parameters, function(parameter) { %>
+        <tr>
+        <td><%= parameter.name %></td>
+        <td><%= parameter.unit %></td>
+        <td><%= parameter.description %></td>
+        </tr>
+      <% }); %>
+      </tbody>
+      </table>
+</script>
+
+
+<div id="charts">
+  <div id="E-chart" class="chart">
+    <div class="title">E [GeV]</div>
+  </div>
+  <div id="MET-chart" class="chart">
+    <div class="title">MET [GeV]</div>
+  </div>
+  <div id="phi-chart" class="chart">
+    <div class="title">phi [radians]</div>
+  </div>
+  <div id="phiMET-chart" class="chart">
+    <div class="title">phiMET [radians]</div>
+  </div>
+  <div id="pt-chart" class="chart">
+    <div class="title">pt [GeV]</div>
+  </div>
+</div>
+
+</div>
+
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/bootstrap-transition.js"></script>
+<script src="../assets/js/bootstrap-alert.js"></script>
+<script src="../assets/js/bootstrap-modal.js"></script>
+<script src="../assets/js/bootstrap-dropdown.js"></script>
+<script src="../assets/js/bootstrap-scrollspy.js"></script>
+<script src="../assets/js/bootstrap-tab.js"></script>
+<script src="../assets/js/bootstrap-tooltip.js"></script>
+<script src="../assets/js/bootstrap-popover.js"></script>
+<script src="../assets/js/bootstrap-button.js"></script>
+<script src="../assets/js/bootstrap-collapse.js"></script>
+<script src="../assets/js/bootstrap-carousel.js"></script>
+<script src="../assets/js/bootstrap-typeahead.js"></script>
+      
+<script src="../js/underscore-min.js"></script>
+<script src="../js/backbone-min.js"></script>
+
+<script src="../js/crossfilter.v1.min.js"></script>
+<script src="../js/d3.v2.min.js"></script>
+
+<script src="crossfilter.js"></script>
+<script src="setup.js"></script>
+
+

@@ -1,7 +1,182 @@
+var MyApp = MyApp || {};
+
+MyApp.Dataset = Backbone.Model.extend({
+	defaults: {
+		type: "Here is the type of the dataset",
+		name: "Here is the name of the dataset",
+		description: "0 events of no particles",
+		image: "",
+		url: "",
+		content: "Here is a bit of text describing the contents of the dataset",
+		selected: false
+	},
+
+	events: {
+		"change:selected": "changeSelected"
+	},
+
+	changeSelected: function() {
+		console.log(this.name, this.selected);
+	},
+
+	idAttribute: "id"
+});
+
+MyApp.Datasets = Backbone.Collection.extend({
+	model: MyApp.Dataset,
+
+	getSelected: function() {
+		selected = this.filter(function(d){
+			return d.get('selected') == true;
+		});
+		return new MyApp.Datasets(selected);
+	},
+
+	deselectAll: function() {
+		this.each(function(d) {
+			d.set('selected', false);
+		});
+	}
+});
+
+MyApp.Parameter = Backbone.Model.extend({
+	defaults: {
+		name: "Here is the default parameter name",
+		unit: "Hectacres",
+		description: "I am a parameter",
+		selected: false
+	},
+
+	idAttribute: "id"
+});
+
+MyApp.Parameters = Backbone.Collection.extend({
+	model: MyApp.Parameter,
+
+	getSelected: function() {
+		selected = this.filter(function(p){
+			return p.get('selected') == true;
+		});
+		return new MyApp.Parameters(selected);
+	},
+
+	deselectAll: function() {
+		this.each(function(p) {
+			p.set('selected', false);
+		})
+;	}
+});
+
+MyApp.DatasetItemView = Backbone.View.extend({
+	el: "li",
+
+	initialize: function() {
+		this.model = this.options.model;
+
+	},
+
+	template: _.template($('#dataset-li-template').html())
+});
+
+MyApp.DatasetDropdownView = Backbone.View.extend({
+	el: "#dropdown",
+
+	initialize: function() {
+		this.collection = this.options.collection;
+	},
+
+	template: _.template($('#dataset-dropdown-template').html()),
+
+	render: function() {
+		$(this.el).html(this.template());
+
+		this.collection.each(function(p) {
+			pv = new MyApp.DatasetItemView();
+			pv.model = p;
+
+			$("ul#dataset-ul").append(pv.template({dataset:p.toJSON()}));
+		});
+	}
+});
+
+MyApp.DatasetNameView = Backbone.View.extend({
+	el: "#name",
+	text: "",
+
+	initialize: function() {
+		this.text = this.options.text;
+	},
+
+	render: function() {
+		$(this.el).html(this.text);
+	}
+});
+
+MyApp.ParameterButtonView = Backbone.View.extend({
+	tagName: 'td',
+
+	initialize: function() {
+		this.render();
+	},
+
+	events: {
+		'click':'clickedButton'
+	},
+
+	clickedButton: function() {
+		var selected = ! $(this.el).find('button').hasClass('active');
+		console.log('clicked ', this.model.get('name'));
+		console.log(selected);
+
+		MyApp.selected        
+	},
+
+	template: _.template($('#parameter-button-template').html()),
+
+	render: function() {
+		$(this.el).html(this.template({parameter:this.model.toJSON()}));
+	}
+});
+
+MyApp.ParameterButtonsView = Backbone.View.extend({
+	el: '#button-table',
+
+	render: function() {
+		this.$el.empty();
+
+		this.collection.each(function(p) {
+			pv = new MyApp.ParameterButtonView({model:p});
+			this.$el.append(pv.el);
+		}, this);
+	}
+});
+
+MyApp.ParametersView = Backbone.View.extend({
+	el: '#buttons',
+
+	initialize: function() {
+		this.collection = this.options.collection;
+	},
+
+	template: _.template($('#parameter-buttons-template').html()),
+
+	render: function() {
+		$(this.el).html(this.template({parameters: this.collection.toJSON()}));
+	}
+});
+
+MyApp.ParameterTableView = Backbone.View.extend({
+    template: _.template($('#parameters-table-template').html()),
+
+    render: function() {
+        $("#parameter-information").append(this.template({parameters: this.collection.toJSON()}));
+    }
+});
+
 $(function() {
 	MyApp.jpsi_dataset = new MyApp.Dataset({id:"Jpsimumu"});
 	MyApp.jpsi_dataset.set({
-		type: "Jpsi",
+		type: "dilepton",
 		name: "Jpsimumu",
 		image: "../img/Jpsimumu.png",
 		description: "2000 di-muon events around the J/&#0968",
@@ -12,7 +187,7 @@ $(function() {
 
 	MyApp.zmumu_dataset = new MyApp.Dataset({id:"Zmumu"});
 	MyApp.zmumu_dataset.set({
-		type: "Z",
+		type: "dilepton",
 		name: "Zmumu", 
 		image: "../img/Zmumu.png",
 		description: "500 di-muon events around the Z boson",
@@ -23,7 +198,7 @@ $(function() {
 
 	MyApp.zee_dataset = new MyApp.Dataset({id:"Zee"});
 	MyApp.zee_dataset.set({
-		type: "Z",
+		type: "dilepton",
 		name: "Zee", 
 		image: "../img/Zee.png",
 		description: "500 di-electron events around the Z boson",
@@ -56,7 +231,7 @@ $(function() {
 
 	MyApp.dimuon_dataset = new MyApp.Dataset({id:"dimuon"});
 	MyApp.dimuon_dataset.set({
-		type: "dimuons",
+		type: "dilepton",
 		name: "dimuon", 
 		image: "../img/dimuon2.png",
 		description: "100,000 di-muon events in the invariant mass range 2-110 GeV",
@@ -112,8 +287,7 @@ $(function() {
 	MyApp.datasets.add(MyApp.wmunu_dataset);
 	MyApp.datasets.add(MyApp.dimuon_dataset);
 
-	MpApp.selecctedDataset = "";
-	MyApp.selectedParameters = [];
+	MyApp.parameter_table_view = new MyApp.ParameterTableView();
 
 	MyApp.Router = Backbone.Router.extend({
 		routes: {
@@ -122,25 +296,36 @@ $(function() {
 
 		datasetSelected: function(name) {
 			var datasetNameView = new MyApp.DatasetNameView();
-			datasetNameView.text = name;
+			datasetNameView.text = MyApp.datasets.get(name).get('description');
 			datasetNameView.render();
 
 			MyApp.selectedDataset = name;
-			MyApp.selectedParameters = [];
 
 			MyApp.datasets.get(name).set('selected', true);
 
 			var dataset_url = MyApp.datasets.get(name).get('url');
 			console.log(dataset_url);
 
-			var parametersView = new MyApp.ParameterButtonsView({collection:MyApp.datasets.get(name).get('parameters')});
-			parametersView.render();
+			var dataset_type = MyApp.datasets.get(name).get('type');
+			console.log(dataset_type);
+
+			$("#parameter-information").empty();
+			$("svg").remove();
+
+			MyApp.parameter_table_view.collection = MyApp.datasets.get(name).get('parameters');
+			MyApp.parameter_table_view.render();
+
+			if ( dataset_type == 'dilepton' ) {
+				dilepton_plots(dataset_url);
+			} else if ( dataset_type == 'W') {
+				W_plots(dataset_url);
+			}
 		}
 	});
 
-	MyApp.datasetDropdownView = new MyApp.DatasetDropdownView();
-	MyApp.datasetDropdownView.collection = MyApp.datasets;
-	MyApp.datasetDropdownView.render();
+	//MyApp.datasetDropdownView = new MyApp.DatasetDropdownView();
+	//MyApp.datasetDropdownView.collection = MyApp.datasets;
+	//MyApp.datasetDropdownView.render();
 
 	MyApp.router = new MyApp.Router();
 	Backbone.history.start();

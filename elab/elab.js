@@ -528,7 +528,6 @@ Elab.Router = Backbone.Router.extend({
 });
 
 $(function() {
-
     Elab.dataset_page_view = new Elab.DatasetPageView();
     Elab.parameter_page_view = new Elab.ParameterPageView();
     Elab.plot_page_view = new Elab.PlotPageView();
