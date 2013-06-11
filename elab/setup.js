@@ -180,7 +180,7 @@ $(function() {
 		name: "Jpsimumu",
 		image: "../img/Jpsimumu.png",
 		description: "2000 di-muon events around the J/&#0968",
-		url: "http://localhost:8000/data/dimuon_2-5GeV.json",
+		url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/dimuon_2-5GeV.json",
 		content: "The J/&#0968 is made up of two charm quarks. It is unstable, and decays to two muons around 6% of the time.",
 		selected: false
 	});
@@ -191,7 +191,7 @@ $(function() {
 		name: "Zmumu", 
 		image: "../img/Zmumu.png",
 		description: "500 di-muon events around the Z boson",
-		url: "http://localhost:8000/data/Zmumu.json",
+		url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Zmumu.json",
 		content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time.",
 		selected: false
 	});
@@ -202,7 +202,7 @@ $(function() {
 		name: "Zee", 
 		image: "../img/Zee.png",
 		description: "500 di-electron events around the Z boson",
-		url: "http://localhost:8000/data/Zee.json",
+		url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Zee.json",
 		content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time.",
 		selected: false
 	});
@@ -213,7 +213,7 @@ $(function() {
 		name: "Wenu", 
 		image: "../img/Wenu.png",
 		description: "500 events of W to e&#0957",
-		url: "http://localhost:8000/data/Wenu.json",
+		url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Wenu.json",
 		content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time.",
 		selected: false
 	});
@@ -224,7 +224,7 @@ $(function() {
 		name: "Wmunu", 
 		image: "../img/Wmunu.png",
 		description: "500 events of W to &#0956&#0957",
-		url: "http://localhost:8000/data/Wmunu.json",
+		url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/Wmunu.json",
 		content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time.",
 		selected: false
 	});
@@ -235,7 +235,7 @@ $(function() {
 		name: "dimuon", 
 		image: "../img/dimuon2.png",
 		description: "100,000 di-muon events in the invariant mass range 2-110 GeV",
-		url: "http://localhost:8000/data/dimuon100k.json",
+		url: "http://cmsdoc.cern.ch/~mccauley/cms-elab/data/dimuon100k.json",
 		content: "Two protons colliding will produce all sorts of particles. Some of these particles can decay into two muons.",
 		selected: false
 	});
