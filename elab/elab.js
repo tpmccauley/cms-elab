@@ -155,11 +155,20 @@ Elab.wmunu_dataset.set({
 Elab.dimuon_dataset = new Elab.Dataset({id:"dimuon"});
 Elab.dimuon_dataset.set({
     name: "dimuon", 
-    image: "../img/dimuon2.png",
+    image: "../img/dimuon.png",
     description: "100,000 di-muon events in the invariant mass range 2-110 GeV",
     url: "http://localhost:8000/data/dimuon100k.json",
-    content: "Two protons colliding will produce all sorts of particles. Some of these particles can decay into two muons."
+    content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two muons."
 });
+
+Elab.dielectron_dataset = new Elab.Dataset({id:"dielectron"});
+Elab.dielectron_dataset.set({
+    name: "dielectron",
+    image: "../img/dielectron.png",
+    description: "100,000 di-electron events in the invariant mass range 2-100 GeV",
+    url: "http://localhost:8000/data/dielectron100k.json",
+    content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two electrons."
+})
 
 Elab.datasets = new Elab.Datasets();
 
@@ -204,6 +213,20 @@ Elab.dimuon_parameters = new Elab.Parameters([
     {name:"phi2", unit:"radians", description:"The phi angle of the second muon direction", id:"phi2", selected:false, image:"../img/phi2.gif"},
     {name:"Q2", unit:"", description:"The charge of the second muon", id:"Q2", selected:false, image:"../img/Q2.gif"},
     {name:"M", unit:"GeV", description:"The invariant mass of the two muons", id:"M", selected:false, image:"../img/M.gif"}
+]);
+
+Elab.dielectron_parameters = new Elab.Parameters([
+    {name:"E1", unit:"GeV", description:"The total energy of the first electron", id:"E1", selected:false, image:"../img/E1.gif"},
+    {name:"pt1", unit:"GeV", description:"The transverse momentum of the first electron", id:"pt1", selected:false, image:"../img/pt1.gif"},
+    {name:"eta1", unit:"", description:"The pseudorapidity of the first electron", id:"eta1", selected:false, image:"../img/eta1.gif"},
+    {name:"phi1", unit:"radians", description:"The phi angle of the first electron direction", id:"phi1", selected:false, image:"../img/phi1.gif"},
+    {name:"Q1", unit:"", description:"The charge of the first electron", id:"Q1", selected:false, image:"../img/Q1.gif"},
+    {name:"E2", unit:"GeV", description:"The total energy of the second electron", id:"E2", selected:false, image:"../img/E2.gif"},
+    {name:"pt2", unit:"GeV", description:"The transverse momentum of the second electron", id:"pt2", selected:false, image:"../img/pt2.gif"},
+    {name:"eta2", unit:"", description:"The pseudorapidity of the second electron", id:"eta2", selected:false, image:"../img/eta2.gif"},
+    {name:"phi2", unit:"radians", description:"The phi angle of the second electron direction", id:"phi2", selected:false, image:"../img/phi2.gif"},
+    {name:"Q2", unit:"", description:"The charge of the second electron", id:"Q2", selected:false, image:"../img/Q2.gif"},
+    {name:"M", unit:"GeV", description:"The invariant mass of the two electrons", id:"M", selected:false, image:"../img/M.gif"}
 ]);
 
 Elab.Jpsi_parameters = new Elab.Parameters([
@@ -254,6 +277,7 @@ Elab.zmumu_dataset.set('parameters', Elab.Zmumu_parameters);
 Elab.wenu_dataset.set('parameters', Elab.Wenu_parameters);
 Elab.wmunu_dataset.set('parameters', Elab.Wmunu_parameters);
 Elab.dimuon_dataset.set('parameters', Elab.dimuon_parameters);
+Elab.dielectron_dataset.set('parameters', Elab.dielectron_parameters);
 
 Elab.datasets.add(Elab.jpsi_dataset);
 Elab.datasets.add(Elab.zee_dataset);
@@ -261,6 +285,7 @@ Elab.datasets.add(Elab.zmumu_dataset);
 Elab.datasets.add(Elab.wenu_dataset);
 Elab.datasets.add(Elab.wmunu_dataset);
 Elab.datasets.add(Elab.dimuon_dataset);
+Elab.datasets.add(Elab.dielectron_dataset);
 
 Elab.plots = new Elab.Plots();
 
