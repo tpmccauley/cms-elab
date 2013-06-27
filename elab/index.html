@@ -157,7 +157,9 @@
       </ul>
 
       <div class="tab-content">
-      <div class="container tab-pane" id="flot-view"></div>
+      <div class="container tab-pane" id="flot-view">
+        <div id="flot-plots"></div>
+      </div>
       <div class="container tab-pane" id="plot-information">
         <ul>
         <li><a href="https://github.com/flot/flot.github.com">Flot</a></li>
@@ -167,8 +169,6 @@
     </script>
 
     <script type="text/template" id="flot-template">
-      <div id="<%= plot.title %>" class="plot">
-
       <div class="plot-controls">
       <table>
       <tr>
@@ -205,7 +205,6 @@
       <div class="title"></div>
       <div class="placeholder"></div>
     
-      </div>
     </script>
 
     </div> <!-- End of full container -->

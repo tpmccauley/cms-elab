@@ -380,7 +380,6 @@ Elab.ParameterButtonView = Backbone.View.extend({
     template: _.template($('#parameter-button-template').html()),
 
     render: function() {
-        console.log($(this.el));
         $(this.el).html(this.template({parameter:this.model.toJSON()}));
     }
 });
@@ -389,6 +388,7 @@ Elab.ParameterButtonsView = Backbone.View.extend({
     render: function() {
         this.collection.each(function(p) {
             pv = new Elab.ParameterButtonView({model:p});
+            //console.log(pv.$el.html());
             $("#parameter-button-row").append(pv.el);
         }, this);
     }
@@ -403,41 +403,51 @@ Elab.ParameterTableView = Backbone.View.extend({
 });
 
 Elab.FlotView = Backbone.View.extend({
+    className: "plot",
+
     initialize: function() {
-        console.log("initialize");
-        //this.render();
+        console.log("initialize flotview");
+        this.render();
     },
 
     events: {
         'click button.logx': 'clickedLogX',
-        'click button.logy': 'clickedLogY'
+        'click button.logy': 'clickedLogY',
+        'click button.binwidth': 'clickedBinWidth',
+        'click button.ymax': 'clickedYMax'
     },
 
     clickedLogX: function() {
-        console.log('logx!');
+        console.log('logx ' + this.id);
     },
 
     clickedLogY: function() {
-        console.log('logy!');
+        console.log('logy ' + this.id);
+    },
+
+    clickedBinWidth: function() {
+        console.log('binwidth ' + this.id);
+    },
+
+    clickedYMax: function() {
+        console.log('ymax ' + this.id);
     },
 
     template: _.template($('#flot-template').html()),
 
     render: function() {
-        console.log($(this.el));
-
-        $("#flot-view").append(this.template({plot: this.model.toJSON()}));
-        $.plot(("#"+this.model.get('title')+" .placeholder"), this.model.get('data'), this.model.get('options'));
-        $('#'+this.model.get('title')+' .title').html(this.model.get('title'));
+        $(this.el).html(this.template({plot: this.model.toJSON()}));
     }
 });
 
 Elab.FlotPlotsView = Backbone.View.extend({
     render: function() {
         this.collection.each(function(p) {
-            console.log('making flot view');
-            pv = new Elab.FlotView({model:p, className:"plot", id:p.get('title')});
-            $("#flot-view").append(pv.el);
+            pv = new Elab.FlotView({model:p, id:p.get('title')});
+            $("#flot-plots").append(pv.el);
+
+            $.plot(("#"+p.get('title')+" .placeholder"), p.get('data'), p.get('options'));
+            $('#'+p.get('title')+' .title').html(p.get('title'));
         }, this);  
     }
 });
