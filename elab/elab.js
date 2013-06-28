@@ -25,6 +25,52 @@ Elab.Datasets = Backbone.Collection.extend({
 	}
 });
 
+Elab.ParentParticle = Backbone.Model.extend({
+    defaults: {
+        name: "Here is the name of the parent particle",
+        image: "",
+        description: "",
+        urls: [],
+        selected: false
+    },
+
+    idAttribute: "id"
+});
+
+Elab.ParentParticles = Backbone.Model.extend({
+    model: Elab.ParentParticle,
+
+    getSelected: function() {
+        selected = this.filter(function(d){
+            return d.get('selected') == true;
+        });
+        return new Elab.ParentParticles(selected);
+    }
+});
+
+Elab.DecayProduct = Backbone.Model.extend({
+    defaults: {
+        name: "Here is the name of the decay product",
+        image: "",
+        description: "",
+        urls: [],
+        selected: false
+    },
+
+    idAttribute: "id"
+});
+
+Elab.DecayProducts = Backbone.Model.extend({
+    model: Elab.DecayProduct,
+
+    getSelected: function() {
+        selected = this.filter(function(d){
+            return d.get('selected') == true;
+        });
+        return new Elab.DecayProducts(selected);
+    }
+});
+
 Elab.Parameter = Backbone.Model.extend({
 	defaults: {
 		name: "Here is the default parameter name",
@@ -168,12 +214,61 @@ Elab.dielectron_dataset.set({
     description: "100,000 di-electron events in the invariant mass range 2-100 GeV",
     url: "http://localhost:8000/data/dielectron100k.json",
     content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two electrons."
-})
+});
 
 Elab.datasets = new Elab.Datasets();
 
 Elab.datasets.on("add", function(ds) {
     console.log("Added dataset: " + ds.get("id"));
+});
+
+Elab.jpsi_primary = new Elab.ParentParticle({id:"jpsi"});
+Elab.jpsi_primary.set({
+    name: "jpsi",
+    description: "J/&#0968",
+    urls: ["http://localhost:8000/data/dimuon_2-5GeV.json"]
+});
+
+Elab.Z_primary = new Elab.ParentParticle({id:"Z"});
+Elab.Z_primary.set({
+    name: "Z",
+    description: "Z",
+    urls: ["http://localhost:8000/data/Zmumu.json", "http://localhost:8000/data/Zee.json"]
+});
+
+Elab.W_primary = new Elab.ParentParticle({id:"W"});
+Elab.W_primary.set({
+    name: "W",
+    description: "W",
+    urls: ["http://localhost:8000/data/Wenu.json", "http://localhost:8000/data/Wmunu.json"]
+});
+
+Elab.dimuon_product = new Elab.DecayProduct({id:"dimuon"});
+Elab.dimuon_product.set({
+    name: "dimuon",
+    description: "dimuon",
+    urls: ["http://localhost:8000/data/dimuon_2-5GeV.json", "http://localhost:8000/data/Zmumu.json", "http://localhost:8000/data/dimuon100k.json"]
+});
+
+Elab.dielectron_product = new Elab.DecayProduct({id:"dielectron"});
+Elab.dielectron_product.set({
+    name: "dielectron",
+    description: "dielectron",
+    urls: ["http://localhost:8000/data/Zee.json", "http://localhost:8000/data/dielectron100k.json"]
+});
+
+Elab.enu_product = new Elab.DecayProduct({id:"enu"});
+Elab.enu_product.set({
+    name: "enu",
+    description: "enu",
+    urls: ["http://localhost:8000/data/Wenu.json"]
+});
+
+Elab.munu_product = new Elab.DecayProduct({id:"munu"});
+Elab.munu_product.set({
+    name: "munu",
+    description: "munu",
+    urls: ["http://localhost:8000/data/Wmunu.json"]
 });
 
 // We could parse the data files to fetch the parameters but there
@@ -406,7 +501,6 @@ Elab.FlotView = Backbone.View.extend({
     className: "plot",
 
     initialize: function() {
-        console.log("initialize flotview");
         this.render();
     },
 
@@ -445,7 +539,6 @@ Elab.FlotPlotsView = Backbone.View.extend({
         this.collection.each(function(p) {
             pv = new Elab.FlotView({model:p, id:p.get('title')});
             $("#flot-plots").append(pv.el);
-
             $.plot(("#"+p.get('title')+" .placeholder"), p.get('data'), p.get('options'));
             $('#'+p.get('title')+' .title').html(p.get('title'));
         }, this);  
