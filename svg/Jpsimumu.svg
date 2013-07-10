@@ -1,0 +1,32 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="384" viewBox="0 0 567 384" xmlns="http://www.w3.org/2000/svg">
+
+<rect x="0" y="0" width="567" height="384" fill="white"/>
+<path d="M113,192h 170"   />
+<path d="M283,192l 114, -163" fill="none"  />
+<path d="M334,111l 8, -4v 9" fill="none"  />
+<path d="M283,192l 114, 163" fill="none"  />
+<path d="M339,279l -1, -9l 8, 4" fill="none"  />
+
+<text x="79" y="201" font-size="35" font-family="Times">
+&#0968;
+</text>
+<text x="49" y="201" font-size="35" font-family="Helvetica" font-weight="bold">
+J/
+</text>
+
+<text x="421" y="337" font-size="24" font-family="Helvetica" font-weight="bold">
++
+</text>
+<text x="401" y="349" font-size="35" font-family="Times">
+&#0956;
+</text>
+
+<text x="424" y="30" font-size="24" font-family="Helvetica" font-weight="bold">
+-
+</text>
+<text x="403" y="45" font-size="35" font-family="Times">
+&#0956;
+</text>
+
+</svg>

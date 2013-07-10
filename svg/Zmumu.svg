@@ -1,0 +1,28 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="384" viewBox="0 0 567 384" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="567" height="384" fill="white"/>
+<path d="M113,192h 170" fill="none"   stroke-dasharray=" 3, 3"/>
+<path d="M283,192l 114, -163" fill="none"  />
+<path d="M334,111l 8, -4v 9" fill="none"  />
+<path d="M283,192l 114, 163" fill="none"  />
+<path d="M339,279l -1, -9l 8, 4" fill="none"  />
+
+<text class="Z" x="78" y="206"  font-size="35" font-family="Helvetica" font-weight="bold">
+Z
+</text>
+
+<text x="423" y="335" font-size="24" font-family="Helvetica" font-weight="bold">
++
+</text>
+<text class="muon" x="402" y="347" font-size="35" font-family="Times">
+&#0956;
+</text>
+
+<text x="423" y="32" font-size="24" font-family="Helvetica" font-weight="bold">
+-
+</text>
+<text class="muon" x="402" y="47" font-size="35" font-family="Times">
+&#0956;
+</text>
+
+</svg>

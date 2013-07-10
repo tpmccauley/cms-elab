@@ -1,0 +1,25 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="384" viewBox="0 0 567 384" xmlns="http://www.w3.org/2000/svg">
+
+<rect x="0" y="0" width="567" height="384" fill="white"/>
+<path d="M113,192h 170" fill="none"   stroke-dasharray=" 3, 3"/>
+<path d="M283,192l 114, -163" fill="none"  />
+<path d="M283,192l 114, 163" fill="none"  />
+
+<text class="W" x="72" y="206" font-size="35" font-family="Helvetica" font-weight="bold">
+W
+</text>
+
+<text x="419" y="355" font-size="24" font-family="Helvetica" font-weight="bold">
+e
+</text>
+<text class="enu" x="402" y="346" font-size="35" font-family="Times">
+&#0957;
+</text>
+
+<text class="electron" x="403" y="45" font-size="35" font-family="Helvetica" font-weight="bold">
+e
+</text>
+
+
+</svg>

@@ -1,0 +1,44 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="259" viewBox="0 0 567 259" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="567" height="259" fill="white"/>
+<path d="M94,130h189" fill="none" stroke="black" stroke-width="3" stroke-dasharray=" 1, 2"/>
+<path d="M283,130l95,-87" fill="none" stroke="black" stroke-width="3" stroke-dasharray=" 3, 3"/>
+<path d="M283,130l95,85" fill="none" stroke="black" stroke-width="3" stroke-dasharray=" 3, 3"/>
+<path d="M378,43l94,-21" fill="none" stroke="black" stroke-width="3"/>
+<path d="M378,43l94,22" fill="none" stroke="black" stroke-width="3"/>
+<path d="M378,216l94,-22" fill="none" stroke="black" stroke-width="3"/>
+<path d="M378,216l94,21" fill="none" stroke="black" stroke-width="3"/>
+<text x="308" y="189" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+Z
+</text>
+<text x="308" y="84" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+Z
+</text>
+<text x="481" y="193" fill="black" font-size="16" font-family="Helvetica" font-weight="bold">
++
+</text>
+<text x="476" y="206" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+l
+</text>
+<text x="482" y="236" fill="black" font-size="16" font-family="Helvetica" font-weight="bold">
+-
+</text>
+<text x="477" y="249" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+l
+</text>
+<text x="481" y="19" fill="black" font-size="16" font-family="Helvetica" font-weight="bold">
++
+</text>
+<text x="476" y="30" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+l
+</text>
+<text x="482" y="61" fill="black" font-size="16" font-family="Helvetica" font-weight="bold">
+-
+</text>
+<text x="477" y="74" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+l
+</text>
+<text x="70" y="138" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+H
+</text>
+</svg>

@@ -1,0 +1,28 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="259" viewBox="0 0 567 259" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="567" height="259" fill="white"/>
+<path d="M299,222h10v1h1v3h1v1h2v-1l1,-1v-3h1v-3l1,-1v-2h2v1h1v2l1,1v1l1,1v3h1v1l1,1h1v-1l1,-1v-2l1,-1v-2l1,-1v-2h1v-1h2v2l1,1v1l1,1v2l1,1v2h1v1h1v-1h1v-2l1,-1v-2l1,-1v-2l1,-1v-1l1,-1l1,1v1l1,1v1l1,1v2l1,1v2l1,1l1,1v-1h1v-1l1,-1v-2l1,-1v-3h1v-2l1,-1
+h1v1l1,1v1l1,1v2l1,1v2l1,1v1h2v-1h1v-3h1v-3l1,-1v-1l1,-1v-1h1l1,1v1l1,1v2l1,1v1l1,1v2l1,1h1l1,-1v-2l1,-1v-2h1v-3l1,-1v-1h2v1l1,1v2h1v2l1,1v2l1,1v1h1l1,-1v-1h1v-3l1,-1h10" fill="none" stroke="black" stroke-width="3"/>
+<path d="M301,43h10v2l1,1v1l1,1v1h1v-1h1v-2h1v-3l1,-1v-2h1v-2h1v-1h1v1l1,1v1l1,1v3l1,1v1l1,1v1l1,1l1,-1v-1l1,-1v-1l1,-1v-3l1,-1v-1l1,-1v-1h1v1h1v2h1v3l1,1v2h1v2h1v1h1v-1l1,-1v-1l1,-1v-3l1,-1v-1l1,-1v-1l1,-1l1,1v1l1,1v1l1,1v3l1,1v1l1,1v1h1v-1h1v-2h1v
+-2l1,-1v-3h1v-2h1v-1h1v1l1,1v1l1,1v3l1,1v1l1,1v1l1,1l1,-1v-1l1,-1v-1l1,-1v-3l1,-1v-1l1,-1v-1h1v1h1v2h1v2l1,1v3h1v2h1v1h1v-1l1,-1v-1l1,-1v-3l1,-1v-1l1,-1v-1l1,-1l1,1v1l1,1v1l1,1v3l1,1v1l1,1v1h1v-1h1v-2h1v-2l1,-1h10" fill="none" stroke="black"
+ stroke-width="3"/>
+<path d="M103,132h108" fill="none" stroke="black" stroke-width="3" stroke-dasharray=" 1, 2"/>
+<path d="M301,42l-91,90" fill="none" stroke="black" stroke-width="3"/>
+<path d="M249,87l9,-3l-2,9" fill="none" stroke="black" stroke-width="3"/>
+<path d="M300,221v-179" fill="none" stroke="black" stroke-width="3"/>
+<path d="M304,128l-4,8l-5,-8" fill="none" stroke="black" stroke-width="3"/>
+<path d="M210,132l91,89" fill="none" stroke="black" stroke-width="3"/>
+<path d="M255,183l-2,-9l8,2" fill="none" stroke="black" stroke-width="3"/>
+<text x="402" y="48" fill="black" font-size="24" font-family="Times">
+&#0947;
+</text>
+<text x="81" y="140" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+H
+</text>
+<text x="242" y="140" fill="black" font-size="24" font-family="Helvetica" font-weight="bold">
+t, W
+</text>
+<text x="400" y="225" fill="black" font-size="24" font-family="Times">
+&#0947;
+</text>
+</svg>

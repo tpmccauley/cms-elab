@@ -1,0 +1,22 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="384" viewBox="0 0 567 384" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="567" height="384" fill="white"/>
+<path d="M113,192h 170" fill="none"  stroke-dasharray=" 3, 3"/>
+<path d="M283,192l 114, -163" fill="none"/>
+<path d="M283,192l 114, 163" fill="none"/>
+
+<text class="W" x="71" y="205" font-size="35" font-family="Helvetica" font-weight="bold">
+W
+</text>
+
+<text class="munu" x="419" y="351" font-size="24" font-family="Times">
+&#0956;
+</text>
+<text x="401" y="343" font-size="35" font-family="Times">
+&#0957;
+</text>
+
+<text class="muon" x="404" y="44" font-size="35" font-family="Times">
+&#0956;
+</text>
+</svg>

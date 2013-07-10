@@ -1,0 +1,36 @@
+<?xml-stylesheet type="text/css" href="../css/svg.css"?>  
+<svg width="567" height="342" viewBox="0 0 567 342" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="567" height="342" fill="white"/>
+<path d="M40,285l185,-86" fill="none" stroke="black" stroke-width="3"/>
+<path d="M40,57l185,86" fill="none" stroke="black" stroke-width="3"/>
+
+<text x="13" y="298" fill="black" font-size="31" font-family="Helvetica" font-weight="bold">
+p
+</text>
+
+<text x="16" y="57" fill="black" font-size="31" font-family="Helvetica" font-weight="bold">
+p
+</text>
+
+<path d="M344,171v-11l-1,-6l-1,-5l-1,-6l-2,-5l-1,-5l-2,-5l-2,-5l-3,-5l-2,-4l-3,-4l-3,-4l-4,-4l-3,-3l-3,-3l-4,-2l-4,-3l-4,-1l-3,-2l-4,-1l-4,-1h-13l-4,1l-4,1l-4,2l-3,1l-4,3l-4,2l-3,3l-4,3l-3,4l-3,4l-3,4l-2,4l-3,5l-2,5l-2,5l-1,5l-2,5l-1,6l-1,5l-1,6v23l
+1,5l1,6l1,5l2,6l1,5l2,5l2,5l3,4l2,4l3,5l3,3l3,4l4,3l3,3l4,3l4,2l3,2l4,1l4,1l4,1l4,1h4l5,-1l4,-1l4,-1l3,-1l4,-2l4,-2l4,-3l3,-3l3,-3l4,-4l3,-3l3,-5l2,-4l3,-4l2,-5l2,-5l1,-5l2,-6l1,-5l1,-6l1,-5v-6z" fill="white"/>
+<path d="M344,171v-11l-1,-6l-1,-5l-1,-6l-2,-5l-1,-5l-2,-5l-2,-5l-3,-5l-2,-4l-3,-4l-3,-4l-4,-4l-3,-3l-3,-3l-4,-2l-4,-3l-4,-1l-3,-2l-4,-1l-4,-1h-13l-4,1l-4,1l-4,2l-3,1l-4,3l-4,2l-3,3l-4,3l-3,4l-3,4l-3,4l-2,4l-3,5l-2,5l-2,5l-1,5l-2,5l-1,6l-1,5l-1,6v23l
+1,5l1,6l1,5l2,6l1,5l2,5l2,5l3,4l2,4l3,5l3,3l3,4l4,3l3,3l4,3l4,2l3,2l4,1l4,1l4,1l4,1h4l5,-1l4,-1l4,-1l3,-1l4,-2l4,-2l4,-3l3,-3l3,-3l4,-4l3,-3l3,-5l2,-4l3,-4l2,-5l2,-5l1,-5l2,-6l1,-5l1,-6l1,-5v-12" fill="none" stroke="black" stroke-width="3"/>
+<path d="M342,196l184,89" fill="none" stroke="black" stroke-width="3"/>
+<path d="M342,147l184,-90" fill="none" stroke="black" stroke-width="3"/>
+
+<text x="550" y="289" fill="black" font-size="21" font-family="Helvetica" font-weight="bold">
++
+</text>
+<text x="531" y="300" fill="black" font-size="31" font-family="Helvetica" font-weight="bold">
+e
+</text>
+
+<text x="550" y="48" fill="black" font-size="21" font-family="Helvetica" font-weight="bold">
+-
+</text>
+<text x="531" y="61" fill="black" font-size="31" font-family="Helvetica" font-weight="bold">
+e
+</text>
+
+</svg>
