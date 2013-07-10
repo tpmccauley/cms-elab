@@ -1,0 +1,13 @@
+path {
+ stroke-width: 3px;
+ stroke: #aaa;
+}
+
+text {
+ fill: #000;
+}
+
+path.text {
+ stroke-width: 2px;
+ stroke: #000;
+}
