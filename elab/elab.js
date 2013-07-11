@@ -6,6 +6,7 @@ Elab.Dataset = Backbone.Model.extend({
 		name: "Here is the name of the dataset",
 		description: "0 events of no particles",
 		image: "",
+        svg: "",
 		url: "",
 		content: "Here is a bit of text describing the contents of the dataset",
 		selected: false
@@ -128,7 +129,7 @@ Elab.Plot = Backbone.Model.extend({
             },
 
             yaxis: { 
-                autoscaleMargin: 0.1 
+                autoscaleMargin: 0.1
             },
 
             crosshair: {
@@ -146,7 +147,7 @@ Elab.Plot = Backbone.Model.extend({
         title:  "default title"
     },
 
-    idAttribute: "id"
+    idAttribute: "id",
 });
 
 Elab.Plots = Backbone.Collection.extend({
@@ -157,6 +158,7 @@ Elab.jpsi_dataset = new Elab.Dataset({id:"Jpsimumu"});
 Elab.jpsi_dataset.set({
     name: "Jpsimumu",
     image: "../img/Jpsimumu.png",
+    svg: "../svg/Jpsimumu.svg",
     description: "2000 di-muon events around the J/&#0968",
     url: "http://localhost:8000/data/dimuon_2-5GeV.json",
     content: "The J/&#0968 is made up of two charm quarks. It is unstable, and decays to two muons around 6% of the time."
@@ -166,6 +168,7 @@ Elab.zmumu_dataset = new Elab.Dataset({id:"Zmumu"});
 Elab.zmumu_dataset.set({
     name: "Zmumu", 
     image: "../img/Zmumu.png",
+    svg: "../svg/Zmumu.svg",
     description: "500 di-muon events around the Z boson",
     url: "http://localhost:8000/data/Zmumu.json",
     content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time."
@@ -175,6 +178,7 @@ Elab.zee_dataset = new Elab.Dataset({id:"Zee"});
 Elab.zee_dataset.set({        
     name: "Zee", 
     image: "../img/Zee.png",
+    svg: "../svg/Zee.svg",
     description: "500 di-electron events around the Z boson",
     url: "http://localhost:8000/data/Zee.json",
     content: "The Z is a neutral gauge boson and is one of the carriers of the weak force. It is unstable, and decays to either two muons or two electrons around 3% of the time."
@@ -184,6 +188,7 @@ Elab.wenu_dataset = new Elab.Dataset({id:"Wenu"});
 Elab.wenu_dataset.set({        
     name: "Wenu", 
     image: "../img/Wenu.png",
+    svg: "../svg/Wenu.svg",
     description: "500 events of W to e&#0957",
     url: "http://localhost:8000/data/Wenu.json",
     content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time.",
@@ -193,6 +198,7 @@ Elab.wmunu_dataset = new Elab.Dataset({id:"Wmunu"});
 Elab.wmunu_dataset.set({
     name: "Wmunu", 
     image: "../img/Wmunu.png",
+    svg: "../svg/Wmunu.svg",
     description: "500 events of W to &#0956&#0957",
     url: "http://localhost:8000/data/Wmunu.json",
     content: "The W is a charged gauge boson and is one of the carriers of the weak force. It is unstable, and decays into either a muon and a muon neutrino or an electron and an electron neutrino around 11% of the time.",
@@ -202,6 +208,7 @@ Elab.dimuon_dataset = new Elab.Dataset({id:"dimuon"});
 Elab.dimuon_dataset.set({
     name: "dimuon", 
     image: "../img/dimuon.png",
+    svg: "../svg/dimuon.svg",
     description: "100,000 di-muon events in the invariant mass range 2-110 GeV",
     url: "http://localhost:8000/data/dimuon100k.json",
     content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two muons."
@@ -211,9 +218,26 @@ Elab.dielectron_dataset = new Elab.Dataset({id:"dielectron"});
 Elab.dielectron_dataset.set({
     name: "dielectron",
     image: "../img/dielectron.png",
+    svg: "../svg/dielectron.svg",
     description: "100,000 di-electron events in the invariant mass range 2-100 GeV",
     url: "http://localhost:8000/data/dielectron100k.json",
     content: "Two protons colliding will produce all sorts of particles. Some of these particles can then produce two electrons."
+});
+
+Elab.h4l_dataset = new Elab.Dataset({id:"Hto4l"});
+Elab.h4l_dataset.set({
+    name: "Hto4l",
+    image: "../img/HtoZZ.png",
+    svg: "../svg/HtoZZ.svg",
+    description: "3 events in the mass range 120-130 GeV, where a Higgs candidate decays into 4 muons, 2 muons and 2 electrons, and into 4 electrons."
+});
+
+Elab.hgammagamma_dataset = new Elab.Dataset({id:"HtoGammaGamma"});
+Elab.hgammagamma_dataset.set({
+    name: "HtoGammaGamma",
+    image: "../img/HtoGammaGamma.png",
+    svg: "../svg/HtoGammaGamma.svg",
+    description: "10 events in the mass range 120-130 GeV, where a Higgs candidate decays into two photons."
 });
 
 Elab.datasets = new Elab.Datasets();
@@ -381,6 +405,8 @@ Elab.datasets.add(Elab.wenu_dataset);
 Elab.datasets.add(Elab.wmunu_dataset);
 Elab.datasets.add(Elab.dimuon_dataset);
 Elab.datasets.add(Elab.dielectron_dataset);
+Elab.datasets.add(Elab.h4l_dataset);
+Elab.datasets.add(Elab.hgammagamma_dataset);
 
 Elab.plots = new Elab.Plots();
 
@@ -502,6 +528,7 @@ Elab.FlotView = Backbone.View.extend({
 
     initialize: function() {
         this.render();
+        this.model.on('change', this.redraw, this);
     },
 
     events: {
@@ -512,25 +539,48 @@ Elab.FlotView = Backbone.View.extend({
     },
 
     clickedLogX: function() {
-        console.log('logx ' + this.id);
+        var selected = ! $(this.el).find('button.logx').hasClass('active');
+        
+        if ( selected ) {
+            this.model.set('options', $.extend(true, {}, this.model.get('options'), {xaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}}));  
+        } else {
+            this.model.set('options', $.extend(true, {}, this.model.get('options'), {xaxis:{transform: function(v) {return Math.exp(v);}}}));
+        }
+
     },
 
     clickedLogY: function() {
-        console.log('logy ' + this.id);
+        var selected = ! $(this.el).find('button.logy').hasClass('active');
+
+        if ( selected ) {
+            // This changes the attributes, but the change event doesn't trigger
+            //$.extend(true, this.model.get('options'), {yaxis: {transform: function(v) {return v > 0 ? Math.log(v) : 0;}}});
+            
+            // This is more convoluted, but triggers a change event
+            this.model.set('options', $.extend(true, {}, this.model.get('options'), {yaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}}));  
+
+        } else {
+            this.model.set('options', $.extend(true, {}, this.model.get('options'), {yaxis:{transform: function(v) {return Math.exp(v);}}}));
+        }
     },
 
     clickedBinWidth: function() {
-        console.log('binwidth ' + this.id);
+        console.log(this.id + ' binwidth= ');
     },
 
     clickedYMax: function() {
-        console.log('ymax ' + this.id);
+        console.log(this.id + ' ymax= ');
     },
 
     template: _.template($('#flot-template').html()),
 
     render: function() {
         $(this.el).html(this.template({plot: this.model.toJSON()}));
+    },
+
+    redraw: function() {
+        console.log('redraw!');
+        $.plot(("#"+this.model.get('title')+" .placeholder"), this.model.get('data'), this.model.get('options'));
     }
 });
 
@@ -538,6 +588,7 @@ Elab.FlotPlotsView = Backbone.View.extend({
     render: function() {
         this.collection.each(function(p) {
             pv = new Elab.FlotView({model:p, id:p.get('title')});
+
             $("#flot-plots").append(pv.el);
             $.plot(("#"+p.get('title')+" .placeholder"), p.get('data'), p.get('options'));
             $('#'+p.get('title')+' .title').html(p.get('title'));
@@ -596,6 +647,10 @@ Elab.Router = Backbone.Router.extend({
                 var name = p.get('name');
                 var histogram = this.buildHistogram(Elab.raw_data.map(function(d) {return d[name];}));
                 var plot = new Elab.Plot({data: [histogram], title: name});
+
+                plot.on("change", function(p){
+                    console.log('changed attributes: ' + p.changedAttributes());
+                });
 
                 Elab.plots.add(plot);
             }, this);

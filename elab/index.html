@@ -93,6 +93,17 @@
       <% }); %>
     </script>
     
+    <!--
+    <script type="text/template" id="dataset-image-template">
+      <h3>Click on a diagram to select a dataset:</h3>
+      <% _.each(datasets, function(dataset) { %>
+        <a class='dataset-image' xlink:href="#parameters-page/<%= dataset.name %>" id=<%= dataset.name %>>
+        <object data=<%= dataset.svg %> img-rounded img-polaroid></object>
+        </a>
+      <% }); %>
+    </script>
+    -->
+
     <script type="text/template" id="parameter-page-template">
       <ul class="breadcrumb">
       <li class="active">Select dataset</a><span class="divider">/</span></li>
@@ -176,7 +187,7 @@
       <td>
       <form class="navbar-form pull-left">
       Y Max:
-      <input type="text" class="span1">
+      <input type="text" name="ymax" class="span1">
       <button type="button" class="btn ymax">Set</button>
       </form>
       </td>
@@ -193,7 +204,7 @@
       <td>
       <form class="navbar-form pull-left">
       Bin Width:
-      <input type="text" class="span1">
+      <input type="text" name="binwidth" class="span1">
       <button type="submit" class="btn binwidth">Set</button>
       </form>
       </td>
