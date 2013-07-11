@@ -565,11 +565,13 @@ Elab.FlotView = Backbone.View.extend({
     },
 
     clickedBinWidth: function() {
-        console.log(this.id + ' binwidth= ');
+        var value = $(this.el).find('input[name=binwidth]').val();
+        console.log(this.id + ' binwidth= ' + value);
     },
 
     clickedYMax: function() {
-        console.log(this.id + ' ymax= ');
+        var value = $(this.el).find('input[name=ymax]').val();
+        console.log(this.id + ' ymax= ' + value);
     },
 
     template: _.template($('#flot-template').html()),
