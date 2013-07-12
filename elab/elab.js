@@ -611,55 +611,24 @@ Elab.FlotPlotsView = Backbone.View.extend({
 });
 
 Elab.buildHistogram = function(data, bw) {
-    var binWidth = bw;
-    var h = [];
-    var histmin = 999999;
-    var histmax = 0;
-    var histogram = [];
+    data = data.map(function(d) {return +d;});
+    
+    var minx = d3.min(data),
+        maxx = d3.max(data),
+        nbins = Math.floor((maxx-minx / bw);
 
+    console.log('min, max, binwidth, nbins: ' + minx + ', ' + maxx + ', ' + bw + ', ' + nbins);
+
+    var histogram = d3.layout.histogram();
+    histogram.bins(nbins);
+    data = histogram(data);
+
+    var output = [];
     for ( var i = 0; i < data.length; i++ ) {
-        var va = data[i];
-        var v = Math.floor(va / binWidth);
-            
-        while (h.length <= v) {
-            h.push(0);
-        }
-        
-        var count = h[v];
-            
-        if (count == null) {
-            count = 0;
-        }
-        
-        h[v] = ++count;
-        
-
-        if (histmin > v) {
-            histmin = v;
-        }
-        
-        if (histmax < v) {
-            histmax = v;
-        }
+        output.push([data[i].x, data[i].y]);
+        output.push([data[i].x + data[i].dx, data[i].y]);
     }
-
-    var last = 0;
-
-    for ( var j = histmin; j <= histmax; j++ ) {
-        var x = j * binWidth;
-        var y = h[j];
-        
-        if (isNaN(y)) {
-            y = 0;
-        }
-            
-        histogram.push([x - 0.0001, last]);
-        histogram.push([x, y]);
-        histogram.push([x + binWidth - 0.0001, y]);
-        last = y;
-    }
-
-    return histogram;
+    return output;
 };
 
 Elab.Router = Backbone.Router.extend({
