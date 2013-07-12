@@ -144,7 +144,8 @@ Elab.Plot = Backbone.Model.extend({
 
         xlabel: "default x label",
         ylabel: "default y label",
-        title:  "default title"
+        title:  "default title",
+        name: "default name"
     },
 
     idAttribute: "id",
@@ -567,6 +568,9 @@ Elab.FlotView = Backbone.View.extend({
     clickedBinWidth: function() {
         var value = $(this.el).find('input[name=binwidth]').val();
         console.log(this.id + ' binwidth= ' + value);
+        var name = this.model.get('name');
+
+        this.model.set('data', [Elab.buildHistogram(Elab.raw_data.map(function(d) {return d[name];}), value)]);
     },
 
     clickedYMax: function() {
@@ -597,6 +601,58 @@ Elab.FlotPlotsView = Backbone.View.extend({
         }, this);  
     }
 });
+
+Elab.buildHistogram = function(data, bw) {
+    var binWidth = bw;
+    var h = [];
+    var histmin = 999999;
+    var histmax = 0;
+    var histogram = [];
+
+    for ( var i = 0; i < data.length; i++ ) {
+        var va = data[i];
+        var v = Math.floor(va / binWidth);
+            
+        while (h.length <= v) {
+            h.push(0);
+        }
+        
+        var count = h[v];
+            
+        if (count == null) {
+            count = 0;
+        }
+        
+        h[v] = ++count;
+        
+
+        if (histmin > v) {
+            histmin = v;
+        }
+        
+        if (histmax < v) {
+            histmax = v;
+        }
+    }
+
+    var last = 0;
+
+    for ( var j = histmin; j <= histmax; j++ ) {
+        var x = j * binWidth;
+        var y = h[j];
+        
+        if (isNaN(y)) {
+            y = 0;
+        }
+            
+        histogram.push([x - 0.0001, last]);
+        histogram.push([x, y]);
+        histogram.push([x + binWidth - 0.0001, y]);
+        last = y;
+    }
+
+    return histogram;
+};
 
 Elab.Router = Backbone.Router.extend({
 	routes: {
@@ -647,8 +703,8 @@ Elab.Router = Backbone.Router.extend({
                 console.log(p.toJSON());
 
                 var name = p.get('name');
-                var histogram = this.buildHistogram(Elab.raw_data.map(function(d) {return d[name];}));
-                var plot = new Elab.Plot({data: [histogram], title: name});
+                var histogram = Elab.buildHistogram(Elab.raw_data.map(function(d) {return d[name];}), 0.1);
+                var plot = new Elab.Plot({data: [histogram], title: name, name: name});
 
                 plot.on("change", function(p){
                     console.log('changed attributes: ' + p.changedAttributes());
@@ -680,58 +736,7 @@ Elab.Router = Backbone.Router.extend({
             var data = eval(request.responseText);
             Elab.raw_data = data;
         });
-    },
-
-    buildHistogram: function(data) {
-        var binWidth = 0.1;
-        var h = [];
-        var histmin = 999999;
-        var histmax = 0;
-        var histogram = [];
-
-        for ( var i = 0; i < data.length; i++ ) {
-            var va = data[i];
-            var v = Math.floor(va / binWidth);
-            
-            while (h.length <= v) {
-                h.push(0);
-            }
-        
-            var count = h[v];
-            
-            if (count == null) {
-                count = 0;
-            }
-        
-            h[v] = ++count;
-            
-            if (histmin > v) {
-                histmin = v;
-            }
-        
-            if (histmax < v) {
-                histmax = v;
-            }
-        }
-
-        var last = 0;
-
-        for ( var j = histmin; j <= histmax; j++ ) {
-            var x = j * binWidth;
-            var y = h[j];
-        
-            if (isNaN(y)) {
-                y = 0;
-            }
-            
-            histogram.push([x - 0.0001, last]);
-            histogram.push([x, y]);
-            histogram.push([x + binWidth - 0.0001, y]);
-            last = y;
-        }
-
-        return histogram;
-    },
+    }
 });
 
 $(function() {
