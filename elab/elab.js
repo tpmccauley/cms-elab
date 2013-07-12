@@ -536,7 +536,12 @@ Elab.FlotView = Backbone.View.extend({
         'click button.logx': 'clickedLogX',
         'click button.logy': 'clickedLogY',
         'click button.binwidth': 'clickedBinWidth',
-        'click button.ymax': 'clickedYMax'
+        'click button.ymax': 'clickedYMax',
+        'click button.undo': 'clickedUndo'
+    },
+
+    goBack: function() {
+        this.model.set('options', $.extend(true, {}, this.model.previousAttributes()));
     },
 
     clickedLogX: function() {
@@ -545,9 +550,8 @@ Elab.FlotView = Backbone.View.extend({
         if ( selected ) {
             this.model.set('options', $.extend(true, {}, this.model.get('options'), {xaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}}));  
         } else {
-            this.model.set('options', $.extend(true, {}, this.model.get('options'), {xaxis:{transform: function(v) {return Math.exp(v);}}}));
+            this.goBack();  
         }
-
     },
 
     clickedLogY: function() {
@@ -561,7 +565,7 @@ Elab.FlotView = Backbone.View.extend({
             this.model.set('options', $.extend(true, {}, this.model.get('options'), {yaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}}));  
 
         } else {
-            this.model.set('options', $.extend(true, {}, this.model.get('options'), {yaxis:{transform: function(v) {return Math.exp(v);}}}));
+           this.goBack();
         }
     },
 
@@ -576,6 +580,10 @@ Elab.FlotView = Backbone.View.extend({
     clickedYMax: function() {
         var value = $(this.el).find('input[name=ymax]').val();
         console.log(this.id + ' ymax= ' + value);
+    },
+
+    clickedUndo: function() {
+        this.goBack();
     },
 
     template: _.template($('#flot-template').html()),
