@@ -238,7 +238,8 @@ Elab.hgammagamma_dataset.set({
     name: "HtoGammaGamma",
     image: "../img/HtoGammaGamma.png",
     svg: "../svg/HtoGammaGamma.svg",
-    description: "10 events in the mass range 120-130 GeV, where a Higgs candidate decays into two photons."
+    description: "10 events in the mass range 120-130 GeV, where a Higgs candidate decays into two photons.",
+    url: "http://localhost:8000/data/diphoton.json"
 });
 
 Elab.datasets = new Elab.Datasets();
@@ -391,6 +392,16 @@ Elab.Zee_parameters = new Elab.Parameters([
     {name:"M", unit:"GeV", description:"The invariant mass of the two electrons", id:"M", selected:false, image:"../img/M.gif"}
 ]);
 
+Elab.gammagamma_parameters = new Elab.Parameters([
+    {name:"pt1", unit:"GeV", description:"The transverse momentum of the first photon", id:"pt1", selected:false},
+    {name:"eta1", unit:"", description:"The pseudorapidity of the first photon", id:"eta1", selected:false},
+    {name:"phi1", unit:"radians", description:"The phi angle of the first photon", id:"phi1", selected:false},
+    {name:"pt2", unit:"GeV", description:"The transverse momentum of the second photon", id:"pt2", selected:false},
+    {name:"eta2", unit:"", description:"The pseudorapidity of the second photon", id:"eta2", selected:false},
+    {name:"phi2", unit:"radians", description:"The phi angle of the second photon", id:"phi2", selected:false},
+    {name:"M", unit:"GeV", description:"The invariant mass of the two photons", id:"M", selected:false}
+]);
+
 Elab.jpsi_dataset.set('parameters', Elab.Jpsi_parameters);
 Elab.zee_dataset.set('parameters', Elab.Zee_parameters);
 Elab.zmumu_dataset.set('parameters', Elab.Zmumu_parameters);
@@ -398,6 +409,7 @@ Elab.wenu_dataset.set('parameters', Elab.Wenu_parameters);
 Elab.wmunu_dataset.set('parameters', Elab.Wmunu_parameters);
 Elab.dimuon_dataset.set('parameters', Elab.dimuon_parameters);
 Elab.dielectron_dataset.set('parameters', Elab.dielectron_parameters);
+Elab.hgammagamma_dataset.set('parameters', Elab.gammagamma_parameters);
 
 Elab.datasets.add(Elab.jpsi_dataset);
 Elab.datasets.add(Elab.zee_dataset);
@@ -615,7 +627,7 @@ Elab.buildHistogram = function(data, bw) {
     
     var minx = d3.min(data),
         maxx = d3.max(data),
-        nbins = Math.floor((maxx-minx / bw);
+        nbins = Math.floor((maxx-minx) / bw);
 
     console.log('min, max, binwidth, nbins: ' + minx + ', ' + maxx + ', ' + bw + ', ' + nbins);
 
