@@ -164,6 +164,7 @@
 
       <ul class="nav nav-tabs">
       <li><a data-target="#flot-view" data-toggle="tab">Flot plots</a></li>
+      <li><a data-target="#crossfilter-view" data-toggle="tab">Crossfilter plots</a></li>
       <li class="active"><a data-target="#plot-information" data-toggle="tab"><i class="icon-question-sign"></i> Information</a></li>
       </ul>
 
@@ -171,11 +172,26 @@
       <div class="container tab-pane" id="flot-view">
         <div id="flot-plots"></div>
       </div>
+      <div class="container tab-pane" id="crossfilter-view">
+        <div id="crossfilter-plots"></div>
+      </div>
       <div class="container tab-pane" id="plot-information">
         <ul>
         <li><a href="https://github.com/flot/flot.github.com">Flot</a></li>
+        <li><a href="http://d3js.org">d3</a></li>
+        <li><a href="https://github.com/square/crossfilter/wiki">crossfilter</a></li>
         </ul>
       </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="crossfilter-template">
+      <div id="charts">
+        <% _.each(parameters, function(parameter) { %>
+          <div id=<%= parameter.name %> +"-chart" class="chart">
+            <div class="title"><%= parameter.name %> [<%= parameter.unit %>]</div>
+          </div>
+        <% }); %>
       </div>
     </script>
 
@@ -211,13 +227,11 @@
       </form>
       </td>
       
-      <!--
       <td><span class="span2"></td>
 
       <td>
       <button type="button" class="btn undo">Undo</button>
       </td>
-      -->
 
       </tr>
       </table>
@@ -250,6 +264,7 @@
     <script src="../js/jquery.flot.js"></script>
     <script src="../js/jquery.flot.selection.js"></script>
     <script src="../js/d3.v2.min.js"></script>
+    <script src="../js/crossfilter.min.js"></script>
 
     <script src="elab.js"></script>
   </body>

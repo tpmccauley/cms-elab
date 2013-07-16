@@ -418,7 +418,7 @@ Elab.datasets.add(Elab.wenu_dataset);
 Elab.datasets.add(Elab.wmunu_dataset);
 Elab.datasets.add(Elab.dimuon_dataset);
 Elab.datasets.add(Elab.dielectron_dataset);
-Elab.datasets.add(Elab.h4l_dataset);
+//Elab.datasets.add(Elab.h4l_dataset);
 Elab.datasets.add(Elab.hgammagamma_dataset);
 
 Elab.plots = new Elab.Plots();
@@ -536,6 +536,14 @@ Elab.ParameterTableView = Backbone.View.extend({
     }
 });
 
+Elab.CrossfilterView = Backbone.View.extend({
+    template: _.template($('#crossfilter-template').html()),
+
+    render: function() {
+        $("#crossfilter-plots").html(this.template({parameters: this.collection.toJSON()}));
+    }
+});
+
 Elab.FlotView = Backbone.View.extend({
     className: "plot",
 
@@ -549,18 +557,30 @@ Elab.FlotView = Backbone.View.extend({
         'click button.logy': 'clickedLogY',
         'click button.binwidth': 'clickedBinWidth',
         'click button.ymax': 'clickedYMax',
-        'click button.undo': 'clickedUndo'
+        'click button.undo': 'clickedUndo',
+        'plotselected': 'plotSelected'
+    },
+
+    plotSelected: function(e, ranges) {
+        console.log("You selected " + ranges.xaxis.from + " to " + ranges.xaxis.to);
+        this.zoomSelection(ranges);
+    },
+
+    zoomSelection: function(ranges) {
+         this.model.set('options', $.extend(true, {}, this.model.get('options'), {xaxis:{min: ranges.xaxis.from, min: ranges.xaxis.to}}));  
     },
 
     goBack: function() {
         this.model.set('options', $.extend(true, {}, this.model.previousAttributes()));
+        console.log(this.model.get('options'));
     },
 
     clickedLogX: function() {
         var selected = ! $(this.el).find('button.logx').hasClass('active');
         
         if ( selected ) {
-            this.model.set('options', $.extend(true, {}, this.model.get('options'), {xaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}}));  
+            $.extend(true, this.model.get('options'), {xaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}});
+            this.model.trigger('change', this.model);  
         } else {
             this.goBack();  
         }
@@ -571,11 +591,8 @@ Elab.FlotView = Backbone.View.extend({
 
         if ( selected ) {
             // This changes the attributes, but the change event doesn't trigger
-            //$.extend(true, this.model.get('options'), {yaxis: {transform: function(v) {return v > 0 ? Math.log(v) : 0;}}});
-            
-            // This is more convoluted, but triggers a change event
-            this.model.set('options', $.extend(true, {}, this.model.get('options'), {yaxis:{transform: function(v) {return v > 0 ? Math.log(v) : 0;}}}));  
-
+            $.extend(true, this.model.get('options'), {yaxis: {transform: function(v) {return v > 0 ? Math.log(v) : 0;}}});
+            this.model.trigger('change', this.model);
         } else {
            this.goBack();
         }
@@ -676,6 +693,9 @@ Elab.Router = Backbone.Router.extend({
 
         Elab.parameter_table_view.collection = Elab.datasets.get(name).get('parameters');
         Elab.parameter_table_view.render();
+
+        // Here we just put all parameters in crossfilter view and render in showPlots
+        Elab.crossfilter_view.collection = Elab.datasets.get(name).get('parameters');
 	},
 	
     showPlots: function() {
@@ -707,6 +727,8 @@ Elab.Router = Backbone.Router.extend({
 
         Elab.flot_plots_view.collection = Elab.plots;
         Elab.flot_plots_view.render();
+
+        Elab.crossfilter_view.render();
 	},
 
     getData: function(data_url) {
@@ -743,6 +765,7 @@ $(function() {
     Elab.parameter_table_view = new Elab.ParameterTableView();
 
     Elab.flot_plots_view = new Elab.FlotPlotsView();
+    Elab.crossfilter_view = new Elab.CrossfilterView();
 
     Elab.router = new Elab.Router();
     Backbone.history.start();
