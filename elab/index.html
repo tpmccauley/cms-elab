@@ -187,9 +187,9 @@
 
     <script type="text/template" id="crossfilter-template">
       <div id="charts">
-        <% _.each(parameters, function(parameter) { %>
-          <div id=<%= parameter.name %> +"-chart" class="chart">
-            <div class="title"><%= parameter.name %> [<%= parameter.unit %>]</div>
+        <% _.each(charts, function(chart) { %>
+          <div id=<%= chart.name %> +"-chart" class="chart">
+            <div class="title"><%= chart.name %> </div>
           </div>
         <% }); %>
       </div>

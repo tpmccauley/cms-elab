@@ -28,29 +28,35 @@ function dilepton_plots(url) {
 
   var event = crossfilter(events),
     all = event.groupAll(),
+
     E1 = event.dimension(function(d) {return d.E1;}),
     E1s = E1.group(function(d) {return Math.floor(d/12.5)*12.5;}),
+    
     E2 = event.dimension(function(d) {return d.E2;}),
     E2s = E2.group(function(d) {return Math.floor(d/12.5)*12.5;}),
    
     pt1 = event.dimension(function(d) {return d.pt1;}),
     pt1s = pt1.group(function(d) {return Math.floor(d/5.)*5;})
+    
     pt2 = event.dimension(function(d) {return d.pt2;}),
     pt2s = pt2.group(function(d) {return Math.floor(d/5.)*5;}),
 
     eta1 = event.dimension(function(d) {return d.eta1;}),
     eta1s = eta1.group(function(d) {return Math.floor(d/0.2)*0.2;}), 
+    
     eta2 = event.dimension(function(d) {return d.eta2;}),
     eta2s = eta2.group(function(d) {return Math.floor(d/0.2)*0.2;}),
     
     phi1 = event.dimension(function(d) {return d.phi1;}),
     phi1s = phi1.group(function(d) {return Math.floor(d/(Math.PI*0.05))*(Math.PI*0.05);}),
+    
     phi2 = event.dimension(function(d) {return d.phi2;}),
     phi2s = phi2.group(function(d) {return Math.floor(d/(Math.PI*0.05))*(Math.PI*0.05);}),
    
     Q1 = event.dimension(function(d) {return d.Q1;}),
     Q1s = Q1.group(function(d) {return Math.floor(d);}),
-    Q2 = event.dimension(function(d) {return d.Q2;}),
+    
+      Q2 = event.dimension(function(d) {return d.Q2;}),
     Q2s = Q2.group(function(d) {return Math.floor(d);}),
    
     M = event.dimension(function(d) {return d.M;}),
@@ -533,7 +539,7 @@ function W_plots(url) {
         }
 
         g.selectAll(".bar").attr("d", barPath);
-      });
+      }); // end of div.each
 
       function barPath(groups) {
         var path = [],
@@ -566,7 +572,7 @@ function W_plots(url) {
             + "M" + (4.5 * x) + "," + (y + 8)
             + "V" + (2 * y - 8);
       }
-    }
+    } // end of chart function
 
     brush.on("brushstart.chart", function() {
       var div = d3.select(this.parentNode.parentNode.parentNode);
@@ -646,7 +652,7 @@ function W_plots(url) {
     };
 
     return d3.rebind(chart, brush, "on");
-  }
+  } // end of bar chart
 });
 };
 

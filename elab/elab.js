@@ -15,6 +15,29 @@ Elab.Dataset = Backbone.Model.extend({
 	idAttribute: "id"
 });
 
+Elab.Chart = Backbone.Model.extend({
+    defaults: {
+        name: "",
+        dimension: {},
+        group: {},
+        margin: {top: 10, right: 10, bottom: 20, left: 10},
+        y: d3.scale.linear().range([200, 0]),
+        chid: 0,
+        axis: d3.svg.axis().orient("bottom"),
+        brush: d3.svg.brush()
+    },
+
+    getDomain: function() {
+        return this.get('domain');
+    },
+
+    idAttribute: "id"
+});
+
+Elab.Charts = Backbone.Collection.extend({
+    model: Elab.Chart
+});
+
 Elab.Datasets = Backbone.Collection.extend({
 	model: Elab.Dataset,
 
@@ -422,6 +445,11 @@ Elab.datasets.add(Elab.dielectron_dataset);
 Elab.datasets.add(Elab.hgammagamma_dataset);
 
 Elab.plots = new Elab.Plots();
+Elab.charts = new Elab.Charts();
+
+Elab.charts.on("add", function(ch) {
+    console.log("Added chart: " + ch.get("name") + ", size: " + this.size());
+});
 
 Elab.DatasetPageView = Backbone.View.extend({
 	el: "#datasets",
@@ -522,7 +550,6 @@ Elab.ParameterButtonsView = Backbone.View.extend({
     render: function() {
         this.collection.each(function(p) {
             pv = new Elab.ParameterButtonView({model:p});
-            //console.log(pv.$el.html());
             $("#parameter-button-row").append(pv.el);
         }, this);
     }
@@ -539,8 +566,23 @@ Elab.ParameterTableView = Backbone.View.extend({
 Elab.CrossfilterView = Backbone.View.extend({
     template: _.template($('#crossfilter-template').html()),
 
+    brush: 
+
     render: function() {
-        $("#crossfilter-plots").html(this.template({parameters: this.collection.toJSON()}));
+        console.log("There are " + this.collection.size() + " charts");
+        $("#crossfilter-plots").append(this.template({charts: this.collection.toJSON()}));
+
+        this.collection.each(function(ch) {
+            var name = ch.get('name');
+
+            // ugh. interface.
+            var xmax = ch.get('dimension').top(1)[0][name];
+            var xmin = ch.get('dimension').bottom(1)[0][name];
+
+            console.log(xmin + ', ' + xmax);
+
+            ch.set('x', d3.scale.linear().domain([xmin, xmax]).rangeRound([0, 400]))
+        }, this);
     }
 });
 
@@ -592,6 +634,7 @@ Elab.FlotView = Backbone.View.extend({
         if ( selected ) {
             // This changes the attributes, but the change event doesn't trigger
             $.extend(true, this.model.get('options'), {yaxis: {transform: function(v) {return v > 0 ? Math.log(v) : 0;}}});
+            // so we trigger it manually
             this.model.trigger('change', this.model);
         } else {
            this.goBack();
@@ -660,6 +703,26 @@ Elab.buildHistogram = function(data, bw) {
     return output;
 };
 
+Elab.getData = function(data_url) {
+    var request = $.ajax({
+        async: false,
+        type: "GET", 
+        url: data_url, 
+        dataType: "json"
+    });
+
+    request.error(function(xhr, textStatus, errorThrown) {
+        console.log(textStatus+" "+errorThrown);
+    }); 
+
+    request.success(function() {
+        var data = eval(request.responseText);
+        Elab.raw_data = data;
+        Elab.crossfilter = crossfilter(data);
+        console.log(Elab.crossfilter.size());
+    });
+};
+
 Elab.Router = Backbone.Router.extend({
 	routes: {
 		"datasets-page": "showDatasets",
@@ -693,24 +756,20 @@ Elab.Router = Backbone.Router.extend({
 
         Elab.parameter_table_view.collection = Elab.datasets.get(name).get('parameters');
         Elab.parameter_table_view.render();
-
-        // Here we just put all parameters in crossfilter view and render in showPlots
-        Elab.crossfilter_view.collection = Elab.datasets.get(name).get('parameters');
 	},
 	
     showPlots: function() {
 		console.log("showPlots");
 
-        this.getData(Elab.datasets.get(Elab.selected_dataset).get('url'));
+        Elab.getData(Elab.datasets.get(Elab.selected_dataset).get('url'));
 
         Elab.plots.reset();
+        Elab.charts.reset();
 
         Elab.datasets
             .get(Elab.selected_dataset)
             .get('parameters')
             .getSelected().each(function(p) {
-                console.log(p.toJSON());
-
                 var name = p.get('name');
                 var histogram = Elab.buildHistogram(Elab.raw_data.map(function(d) {return d[name];}), 0.1);
                 var plot = new Elab.Plot({data: [histogram], title: name, name: name});
@@ -720,7 +779,16 @@ Elab.Router = Backbone.Router.extend({
                 });
 
                 Elab.plots.add(plot);
-            }, this);
+
+                var dimension = Elab.crossfilter.dimension(function(d) {return d[name];});
+                //console.log(dimension.top(1));
+
+                var group = dimension.group(function(d) {return Math.floor(d/0.1)*0.1;});
+                //console.log(group);
+
+                var chart = new Elab.Chart({name:name, dimension:dimension, group:group});
+                Elab.charts.add(chart);
+            });
 
         Elab.emptyAll();
         Elab.plot_page_view.render();
@@ -728,26 +796,9 @@ Elab.Router = Backbone.Router.extend({
         Elab.flot_plots_view.collection = Elab.plots;
         Elab.flot_plots_view.render();
 
+        Elab.crossfilter_view.collection = Elab.charts;
         Elab.crossfilter_view.render();
-	},
-
-    getData: function(data_url) {
-        var request = $.ajax({
-            async: false,
-            type: "GET", 
-            url: data_url, 
-            dataType: "json"
-        });
-
-        request.error(function(xhr, textStatus, errorThrown) {
-            console.log(textStatus+" "+errorThrown);
-        }); 
-
-        request.success(function() {
-            var data = eval(request.responseText);
-            Elab.raw_data = data;
-        });
-    }
+	}
 });
 
 $(function() {
