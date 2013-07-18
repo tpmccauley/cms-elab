@@ -11,6 +11,7 @@
     <link href="../assets/css/bootstrapSwitch.css" rel="stylesheet">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
     <link rel="stylesheet" href="../css/elab.css"/>
+    <link rel="stylesheet" href="../css/crossfilter.css"/>
     
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
@@ -185,11 +186,22 @@
       </div>
     </script>
 
+    <!--
     <script type="text/template" id="crossfilter-template">
       <div id="charts">
         <% _.each(charts, function(chart) { %>
           <div id=<%= chart.name %> +"-chart" class="chart">
             <div class="title"><%= chart.name %> </div>
+          </div>
+        <% }); %>
+      </div>
+    </script>
+    -->
+    <script type="text/template" id="crossfilter-template">
+      <div id="charts">
+        <% _.each(parameters, function(parameter) { %>
+          <div id=<%= parameter.name %> +"-chart" class="chart">
+            <div class="title"><%= parameter.name %> [<%= parameter.unit %>]</div>
           </div>
         <% }); %>
       </div>
